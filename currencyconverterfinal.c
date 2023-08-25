@@ -19,6 +19,8 @@ int main()
 
     printf("\n\n");
 
+    if(from!=to)
+    {
     if(from==2)//usd to any
         {
            float takenvalue = usdtoanylist[to-1];
@@ -34,8 +36,14 @@ int main()
         {
             float anytousd = anytousdlist[from-1];
             float tousd = anytousd*value;
-            printf("Converted value== %.2f %s\n\n",usdtoanylist[to-1]*tousd,currencyname[to-1]);
+            printf("%d %s to %s is => %.2f %s\n\n",value,currencyname[from-1],currencyname[to-1],tousd*value,currencyname[to-1]);
         }
+    }
+    else if(from==to)
+    {
+        float values=(float)value;
+        printf("%d %s to %s is => %.2f %s\n\n",value,currencyname[from-1],currencyname[to-1],values,currencyname[to-1]);
+    }
         printf("Exit?\n\n1.Yes 2.No\n\n");
         scanf("%d",&exit);
         switch(exit)
