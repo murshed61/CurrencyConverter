@@ -32,8 +32,8 @@ int main()
         }
         else//any to any
         {
-            float anytoany = anytousdlist[from-1];
-            float tousd = anytoany*value;
+            float anytousd = anytousdlist[from-1];
+            float tousd = anytousd*value;
             printf("Converted value== %.2f %s\n\n",usdtoanylist[to-1]*tousd,currencyname[to-1]);
         }
         printf("Exit?\n\n1.Yes 2.No\n\n");
