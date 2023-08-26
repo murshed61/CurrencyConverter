@@ -23,20 +23,20 @@ int main()
     {
     if(from==2)//usd to any
         {
-           float takenvalue = usdtoanylist[to-1];
-           printf("%d %s to %s is => %.2f %s\n\n",value,currencyname[from-1],currencyname[to-1],takenvalue*value,currencyname[to-1]);
+           float calctusd = usdtoanylist[to-1]*value;
+           printf("%d %s to %s is => %.2f %s\n\n",value,currencyname[from-1],currencyname[to-1],calctusd,currencyname[to-1]);
         }
 
         else if(to==2)//any to usd
         {
-            float anyvalue = anytousdlist[from-1];
-            printf("%d %s to %s is => %.2f %s\n\n",value,currencyname[from-1],currencyname[to-1],anyvalue*value,currencyname[to-1]);
+            float calctany = anytousdlist[from-1]*value;
+            printf("%d %s to %s is => %.2f %s\n\n",value,currencyname[from-1],currencyname[to-1],calctany,currencyname[to-1]);
         }
         else//any to any
         {
-            float anytousd = anytousdlist[from-1];
-            float tousd = anytousd*value;
-            printf("%d %s to %s is => %.2f %s\n\n",value,currencyname[from-1],currencyname[to-1],usdtoanylist[to-1]*tousd,currencyname[to-1]);
+            float anytousd = anytousdlist[from-1]*value;
+            float calculated = usdtoanylist[to-1]*anytousd;
+            printf("%d %s to %s is => %.2f %s\n\n",value,currencyname[from-1],currencyname[to-1],calculated,currencyname[to-1]);
         }
     }
     else if(from==to)
