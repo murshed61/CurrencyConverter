@@ -67,6 +67,7 @@ void currencyconversion(int from,int to,float value)
 
 int main()
 {
+
     //welcome heading
     printf("\t\t\t\t\t\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////\n");
     printf("\t\t\t\t\t    %c Welcome to Currency Converter %c\n",175,174);
@@ -104,7 +105,8 @@ int main()
             break;
 
         default:
-            printf("Something is Wrong!!\n");
+            printf("\n\tSomething is Wrong!!\n");
+            error_handling();
             break;
         }
 
@@ -140,6 +142,7 @@ int main()
 
         default:
             printf("Something is Wrong!!\n");
+            error_handling();
             break;
         }
 
@@ -172,6 +175,11 @@ int main()
             from = from+80;
             break;
         }
+        if(from<=0&&from>95)
+        {
+            printf("\n\tSomething is Wrong!!\n");
+            error_handling();
+        }
         switch (continent_to)
         {
         case 1:
@@ -193,40 +201,17 @@ int main()
             to=to+80;
             break;
         }
+        if(to<=0&&to>95)
+        {
+            printf("\n\tSomething is Wrong!!\n");
+            error_handling();
+        }
         currencyconversion(from,to,amount);
-
-
-        //last code
-        char close;
-        printf("\n %c Enter   (+) for More Convertion   (?) for About us   (x) for Exit...\n %c ",254,175);
-        scanf(" %c",&close);
-        if (close == 'x' || close =='X')
-        {
-            break;
-        }
-        else if (close == '?')
-        {
-            printf("\n %c About Us %c\n",175,174);
-            printf(" ------------\n");
-            printf(" A Project by \"CODE MINERS\"!\n\n");
-            printf(" 1. Shishir Karmokar - 254\n");
-            printf(" 2. Gulam Murshed - 336\n");
-            printf(" 3. Anamika Akter - 101\n");
-            printf(" 4. Bijoy Krishna Sarker - 219\n\n");
-
-        }
-        else if (close == '+')
-        {
-            r++;
-        }
-        i++;
-
+        error_handling();
     }
-    while(i==r);
+    while(1);
 
-    printf(" Thank You <3\n");
 
-    return 0;
 }
 
 void continents()
@@ -368,4 +353,30 @@ void south_america_currencys()
     printf(" [13] Falkland Islands Pound (FKP)\n");
     printf(" [14] Aruban Florin (AWG)\n");
     printf(" [15] Belize Dollar (BZD)\n");
+}
+void error_handling()
+{
+    char close;
+    printf("\n %c Enter   (+) for More Conversion   (?) for About us   (x) for Exit...\n %c ",254,175);
+    scanf(" %c",&close);
+    if (close == 'x' || close =='X')
+    {
+        printf("Thank You <3\n");
+        exit(0);
+    }
+    else if (close == '?')
+    {
+        printf("\n %c About Us %c\n",175,174);
+        printf(" ------------\n");
+        printf(" A Project by \"CODE MINERS\"!\n\n");
+        printf(" 1. Shishir Karmokar - 254\n");
+        printf(" 2. Gulam Murshed - 336\n");
+        printf(" 3. Anamika Akter - 101\n");
+        printf(" 4. Bijoy Krishna Sarker - 219\n\n");
+        error_handling();
+    }
+    else if (close == '+')
+    {
+        main();
+    }
 }
