@@ -114,7 +114,16 @@ int main()
         printf(" ------------------------------------\n");
         printf(" %c Currency To Convert From -> ",175);
         scanf("%d",&from);
-
+        if(from>20||from<1&&continent_from==1)
+        {
+            printf("\n\tSomething is Wrong!!\n");
+            error_handling();
+        }
+        else if(continent_from!=1&&from>15||from<1)
+        {
+            printf("\n\tSomething is Wrong!!\n");
+            error_handling();
+        }
         //Taking input continent_to and to
         continents();
         scanf("%d",&continent_to);
@@ -150,6 +159,16 @@ int main()
         printf(" ------------------------------------\n");
         printf(" %c Currency To Convert To -> ",175);
         scanf("%d",&to);
+       if(to>20||to<1&&continent_to==1)
+        {
+            printf("\n\tSomething is Wrong!!\n");
+            error_handling();
+        }
+        else if(to>15||to<1&&continent_to>1)
+        {
+            printf("\n\tSomething is Wrong!!\n");
+            error_handling();
+        }
 
         //Taking input Amount of money
         printf("\n %c Please Enter The Amount To CONVERT -> ",175);
@@ -174,11 +193,6 @@ int main()
         case 6:
             from = from+80;
             break;
-        }
-        if(from<=0&&from>95)
-        {
-            printf("\n\tSomething is Wrong!!\n");
-            error_handling();
         }
         switch (continent_to)
         {
@@ -268,11 +282,6 @@ void europe_currencys()
     printf(" [13] Ukrainian Hryvnia (UAH)\n");
     printf(" [14] Icelandic Krona (ISK)\n");
     printf(" [15] Serbian Dinar (RSD)\n");
-    printf(" [16] Bosnian Convertible Mark (BAM)\n");
-    printf(" [17] Macedonian Denar (MKD)\n");
-    printf(" [18] Albanian Lek (ALL)\n");
-    printf(" [19] Belarusian Ruble (BYN)\n");
-    printf(" [20] Moldovan Leu (MDL)\n");
 }
 void africa_currencys()
 {
@@ -378,5 +387,10 @@ void error_handling()
     else if (close == '+')
     {
         main();
+    }
+    else
+    {
+        printf("\n\tSomething is Wrong!!\n");
+        error_handling();
     }
 }
