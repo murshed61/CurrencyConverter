@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<conio.h>
 #include<stdbool.h>
+#include<ctype.h>
 
 
 void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
@@ -97,6 +98,10 @@ int main()
             char name2[3];
             printf("Enter name of the currency you want to convert from-->");
             scanf("%s",&name1);
+            for(int i = 0;i<3;i++)
+            {
+                name1[i]=toupper(name1[i]);
+            }
             bool found1 = false;
             for(int i = 0; i<95; i++)
             {
@@ -118,6 +123,10 @@ int main()
             }
             printf("Enter name of the currency you want to convert to-->");
             scanf("%s",&name2);
+            for(int i = 0;i<3;i++)
+            {
+                name2[i]=toupper(name2[i]);
+            }
             bool found2 = false;
             for(int i = 0; i<95; i++)
             {
