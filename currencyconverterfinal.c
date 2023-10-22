@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include<stdlib.h>
 #include<conio.h>
@@ -87,7 +88,7 @@ int main()
         int from,to,continent_from,continent_to;
         float amount;
         int ch;
-        printf("SEARCH TO CONVERT[1] MANUAL CONVERSION [2]\n");
+        printf("SEARCH TO CONVERT[1] MANUAL CONVERSION [2] CURRENCY LIST[3]\n");
         scanf("%d",&ch);
         if(ch==1)
         {
@@ -305,6 +306,17 @@ int main()
             currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
             error_handling();
         }
+        else if(ch==3)
+        {
+            printf("||ALL CURRENCY LIST||\n");
+            for(int i = 0;i<95;i++)
+            {
+                printf("|%d| %s \n",i+1,currency_name[i]);
+            }
+            error_handling();
+
+        }
+
     }
     return 0;
 
@@ -463,18 +475,16 @@ void south_america_currencys()
 void error_handling()
 {
     printf("\033[0;45m");
-    char close;
-    printf("\n %c Enter   (+) for More Conversion   (?) for About us   (x) for Exit...\n %c ",254,175);
-
-    scanf(" %c",&close);
-    getchar();
+    int close;
+    printf("\n %c Enter   (1) for More Conversion   (2) for About us   (3) for Exit...\n %c ",254,175);
+    scanf("%d",&close);
     printf("\033[0m");
-    if (close == 'x' || close =='X')
+    if (close == '1')
     {
         printf("Thank You <3\n");
         exit(0);
     }
-    else if (close == '?')
+    else if (close == '2')
     {
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
@@ -485,14 +495,14 @@ void error_handling()
         printf(" 4. Bijoy Krishna Sarker - 219\n\n");
         error_handling(1);
     }
-    else if (close == '+')
+    else if (close == '3')
     {
         main();
     }
     else
     {
-        printf("\n\tSomething is Wrong!!\n");
-        error_handling();
+        printf("\n\tSomething is Wrong!! Forwarding To Main Menu\n");
+
 
     }
     printf("\033[0m");
