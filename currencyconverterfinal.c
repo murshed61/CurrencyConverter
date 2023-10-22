@@ -313,8 +313,14 @@ int main()
             {
                 printf("|%d| %s \n",i+1,currency_name[i]);
             }
+            getchar();
             error_handling();
 
+        }
+        else
+        {
+            printf("\n\tSomething is Wrong!!\n");
+                error_handling();
         }
 
     }
@@ -478,13 +484,14 @@ void error_handling()
     int close;
     printf("\n %c Enter   (1) for More Conversion   (2) for About us   (3) for Exit...\n %c ",254,175);
     scanf("%d",&close);
+    getchar();
     printf("\033[0m");
-    if (close == '1')
+    if (close == 3)
     {
         printf("Thank You <3\n");
         exit(0);
     }
-    else if (close == '2')
+    else if (close == 2)
     {
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
@@ -495,14 +502,14 @@ void error_handling()
         printf(" 4. Bijoy Krishna Sarker - 219\n\n");
         error_handling(1);
     }
-    else if (close == '3')
+    else if (close == 1)
     {
         main();
     }
     else
     {
-        printf("\n\tSomething is Wrong!! Forwarding To Main Menu\n");
-
+        printf("\n\tSomething is Wrong!!\n");
+        error_handling();
 
     }
     printf("\033[0m");
