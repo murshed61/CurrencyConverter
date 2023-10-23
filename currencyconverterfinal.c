@@ -105,7 +105,7 @@ int main()
             srand(time(NULL));
             char name1[3];
             char name2[3];
-            int num_currencies = sizeof(currency_name) / sizeof(currency_name[0]);
+            int num_currencies = 94;
 
             printf("-------------------------------------------------------------------------------------------");
             printf("\nPopular Currencies of the Day: ");
