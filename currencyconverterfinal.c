@@ -1,11 +1,9 @@
-
 #include <stdio.h>
 #include<stdlib.h>
 #include<conio.h>
 #include<stdbool.h>
 #include<ctype.h>
-
-
+#include <time.h>
 void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
 {
     for(int i=0; i<95; i++)
@@ -47,7 +45,6 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
 
 int main()
 {
-
     system("cls");
     char *currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
                             "THB","TRY", "RUB", "IDR", "PKR","MYR","SGD","ILS","IRR",
@@ -88,18 +85,47 @@ int main()
         int from,to,continent_from,continent_to;
         float amount;
         int ch;
-        printf("SEARCH TO CONVERT[1] MANUAL CONVERSION [2] CURRENCY LIST[3]\n");
+        printf("\033[32m");
+
+        printf("*****************************************\n");
+        printf("           MENU OPTIONS                 \n");
+        printf("[1] SEARCH TO CONVERT                 \n");
+        printf("[2] MANUAL CONVERSION                 \n");
+        printf("[3] CURRENCY LIST                     \n");
+        printf("*****************************************\n");
+        printf("Enter Choice-->> ");
+
+        // Reset text color to default
+        printf("\033[0m");
+
         scanf("%d",&ch);
         if(ch==1)
         {
-            from = -2;
-            to = -2;
-            amount = 0;
+
+            srand(time(NULL));
             char name1[3];
             char name2[3];
-            printf("Enter name of the currency you want to convert from-->");
+            int num_currencies = sizeof(currency_name) / sizeof(currency_name[0]);
+
+            printf("-------------------------------------------------------------------------------------------");
+            printf("\nPopular Currencies of the Day: ");
+
+
+
+            for (int i = 0; i < 10; i++)
+            {
+                int random_index = rand() % num_currencies;
+                printf("%c %s ", 254,currency_name[random_index]);
+            }
+            printf("\n-------------------------------------------------------------------------------------------");
+            printf("\n\n");
+
+
+            printf("Enter the name of the currency you want to convert from:(usd,bdt,cny,etc....)%c%c",254,175);
+
             scanf("%s",&name1);
-            for(int i = 0;i<3;i++)
+
+            for(int i = 0; i<3; i++)
             {
                 name1[i]=toupper(name1[i]);
             }
@@ -115,16 +141,18 @@ int main()
                 else if(i==94)
                 {
                     printf("CURRENCY NOT FOUND\n");
-                    error_handling();
+                    exit_menu();
                 }
             }
             if(found1)
             {
+                printf("------------------------------\n");
                 printf("SELECTED CURRENCY IS || %s ||\n",currency_name[from-1]);
+                printf("------------------------------\n");
             }
             printf("Enter name of the currency you want to convert to-->");
             scanf("%s",&name2);
-            for(int i = 0;i<3;i++)
+            for(int i = 0; i<3; i++)
             {
                 name2[i]=toupper(name2[i]);
             }
@@ -137,20 +165,22 @@ int main()
                     to = i+1;
                     break;
                 }
-                 else if(i==94)
+                else if(i==94)
                 {
                     printf("CURRENCY NOT FOUND\n");
-                    error_handling();
+                    exit_menu();
                 }
             }
             if(found2)
             {
+                printf("------------------------------\n");
                 printf("SELECTED CURRENCY IS || %s ||\n",currency_name[to-1]);
+                printf("------------------------------\n");
             }
             printf("Enter amount-->");
             scanf("%f",&amount);
             currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
-            error_handling();
+            exit_menu();
         }
 
         else if(ch==2)
@@ -184,7 +214,6 @@ int main()
                 break;
 
             default:
-                printf("\n\tSomething is Wrong!!\n");
                 error_handling();
                 break;
             }
@@ -197,12 +226,11 @@ int main()
             printf("\033[0m");
             if(continent_from==1&&from>20||from<1)
             {
-                printf("\n\tSomething is Wrong!!\n");
+
                 error_handling();
             }
             else if(continent_from!=1&&from>15||from<1)
             {
-                printf("\n\tSomething is Wrong!!\n");
                 error_handling();
             }
             //Taking input continent_to and to
@@ -231,7 +259,6 @@ int main()
                 break;
 
             default:
-                printf("\n\tSomething is Wrong!!\n");
                 error_handling();
                 break;
             }
@@ -243,12 +270,10 @@ int main()
             printf("\033[0m");
             if(to>20||to<1&&continent_to==1)
             {
-                printf("\n\tSomething is Wrong!!\n");
                 error_handling();
             }
             else if(to>15||to<1&&continent_to>1)
             {
-                printf("\n\tSomething is Wrong!!\n");
                 error_handling();
             }
 
@@ -300,27 +325,25 @@ int main()
             }
             if(to<=0&&to>95)
             {
-                printf("\n\tSomething is Wrong!!\n");
                 error_handling();
             }
             currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
-            error_handling();
+            exit_menu();
         }
         else if(ch==3)
         {
             printf("||ALL CURRENCY LIST||\n");
-            for(int i = 0;i<95;i++)
+            for(int i = 0; i<95; i++)
             {
                 printf("|%d| %s \n",i+1,currency_name[i]);
             }
             getchar();
-            error_handling();
+            exit_menu();
 
         }
         else
         {
-            printf("\n\tSomething is Wrong!!\n");
-                error_handling();
+            error_handling();
         }
 
     }
@@ -479,6 +502,46 @@ void south_america_currencys()
     printf("\033[0m");
 }
 void error_handling()
+{
+    system("cls");
+    printf("\033[0;41m\n\tSomething is Wrong!!\n\033[0m");
+    printf("\033[0;45m");
+    int close;
+    printf("\n %c Enter   (1) for More Conversion   (2) for About us   (3) for Exit...\n %c ",254,175);
+    scanf("%d",&close);
+    getchar();
+    printf("\033[0m");
+    if (close == 3)
+    {
+        printf("Thank You <3\n");
+        exit(0);
+    }
+    else if (close == 2)
+    {
+        printf("\n %c About Us %c\n",175,174);
+        printf(" ------------\n");
+        printf(" A Project by \"CODE MINERS\"!\n\n");
+        printf(" 1. Shishir Karmokar - 254\n");
+        printf(" 2. Gulam Murshed - 336\n");
+        printf(" 3. Anamika Akter - 101\n");
+        printf(" 4. Bijoy Krishna Sarker - 219\n\n");
+        error_handling(1);
+    }
+    else if (close == 1)
+    {
+        main();
+    }
+    else
+    {
+        printf("\n\tSomething is Wrong!!\n");
+        error_handling();
+
+    }
+    printf("\033[0m");
+
+
+}
+void exit_menu()
 {
     printf("\033[0;45m");
     int close;
