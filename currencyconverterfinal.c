@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<conio.h>
 #include<stdbool.h>
+#include<string.h>
 #include<ctype.h>
 #include <time.h>
 void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
@@ -105,17 +106,14 @@ int main()
             srand(time(NULL));
             char name1[3];
             char name2[3];
-            int num_currencies = 94;
+            int num_currencies = 96;
 
             printf("-------------------------------------------------------------------------------------------");
             printf("\nPopular Currencies of the Day: ");
-
-
-
             for (int i = 0; i < 10; i++)
             {
                 int random_index = rand() % num_currencies;
-                printf("%c %s ", 254,currency_name[random_index]);
+                printf("%c %s ", 254,currency_name[random_index-1]);
             }
             printf("\n-------------------------------------------------------------------------------------------");
             printf("\n\n");
@@ -517,7 +515,7 @@ void error_handling()
         exit(0);
     }
     else if (close == 2)
-    {
+    {   system("cls");
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
         printf(" A Project by \"CODE MINERS\"!\n\n");
@@ -525,7 +523,7 @@ void error_handling()
         printf(" 2. Gulam Murshed - 336\n");
         printf(" 3. Anamika Akter - 101\n");
         printf(" 4. Bijoy Krishna Sarker - 219\n\n");
-        error_handling(1);
+        exit_menu();
     }
     else if (close == 1)
     {
@@ -555,7 +553,7 @@ void exit_menu()
         exit(0);
     }
     else if (close == 2)
-    {
+    {   system("cls");
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
         printf(" A Project by \"CODE MINERS\"!\n\n");
@@ -563,7 +561,7 @@ void exit_menu()
         printf(" 2. Gulam Murshed - 336\n");
         printf(" 3. Anamika Akter - 101\n");
         printf(" 4. Bijoy Krishna Sarker - 219\n\n");
-        error_handling(1);
+        exit_menu();
     }
     else if (close == 1)
     {
