@@ -516,7 +516,7 @@ void error_handling()
         printf("Thank You <3\n");
         exit(0);
     }
-    else if (close == 2)
+    else if (close == '?')
     {   system("cls");
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
@@ -527,7 +527,7 @@ void error_handling()
         printf(" 4. Bijoy Krishna Sarker - 219\n\n");
         exit_menu();
     }
-    else if (close == 1)
+    else if (close == '+')
     {
         main();
     }
