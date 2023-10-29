@@ -506,10 +506,9 @@ void error_handling()
     while((c=getchar())!='\n'&&c!=EOF);
     printf("\033[0;41m\n\tSomething is Wrong!!\n\033[0m");
     printf("\033[0;45m");
-    int close;
+    char close;
     printf("\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit...\n %c ",254,175);
-    scanf("%c ",&close);
-    getchar();
+    scanf(" %c",&close);
     printf("\033[0m");
     if (close == 'x'||close == 'X')
     {
@@ -538,7 +537,6 @@ void error_handling()
     }
     printf("\033[0m");
 
-
 }
 void exit_menu()
 {
@@ -547,8 +545,7 @@ void exit_menu()
     printf("\033[0;45m");
     char close;
     printf("\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit...\n %c ",254,175);
-    scanf("%c ",&close);
-    getchar();
+    scanf(" %c",&close);
     printf("\033[0m");
     if (close == 'x'||close == 'X')
     {
