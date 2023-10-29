@@ -1,10 +1,23 @@
 #include <stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include<conio.h>
 #include<stdbool.h>
-#include<string.h>
 #include<ctype.h>
 #include <time.h>
+
+//Function Declaration
+void continents();
+void asia_currencys();
+void europe_currencys();
+void africa_currencys();
+void australia_currencys();
+void north_america_currencys();
+void south_america_currencys();
+void error_handling();
+void exit_menu();
+
+//Currency Conversion Function
 void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
 {
     for(int i=0; i<95; i++)
@@ -12,38 +25,40 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
         any_to_bdt[i]=1/bdt_to_any[i];
     }
 
-    printf("\033[0;46m");
+    printf("\033[1;31m");
     if(from==to)//same currency
     {
-        printf("\t------------ -------------- ---------------------\n");
-        printf("\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],value,currency_name[to-1]);
-        printf("\t------------ -------------- ---------------------\n");
+        printf("\n\n\t<=--------------------------------------------=>\n");
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],value,currency_name[to-1]);
+        printf("\t<=--------------------------------------------=>\n");
     }
     else if(from==1)//bdt_to_any
     {
         float calculated_any_value=bdt_to_any[to-1]*value;
-        printf("\t------------ -------------- ---------------------\n");
-        printf("\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any_value,currency_name[to-1]);
-        printf("\t------------ -------------- ---------------------\n");
+        printf("\n\n\t<=--------------------------------------------=>\n");
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any_value,currency_name[to-1]);
+        printf("\t<=--------------------------------------------=>\n");
     }
     else if(to==1)//any_to_bdt
     {
         float calculated_bdt_value = any_to_bdt[from-1]*value;
-        printf("\t------------ -------------- ---------------------\n");
-        printf("\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_bdt_value,currency_name[to-1]);
-        printf("\t------------ -------------- ---------------------\n");
+        printf("\n\n\t<=--------------------------------------------=>\n");
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_bdt_value,currency_name[to-1]);
+        printf("\t<=--------------------------------------------=>\n");
     }
     else if(from!=to)//ANY TO ANY
     {
         float anyToBdt = any_to_bdt[from-1]*value;
         float calculated_any = bdt_to_any[to-1]*anyToBdt;
-        printf("\t------------ -------------- ---------------------\n");
-        printf("\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any,currency_name[to-1]);
-        printf("\t------------ -------------- ---------------------\n");
+
+        printf("\n\n\t<=--------------------------------------------=>\n");
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any,currency_name[to-1]);
+        printf("\t<=--------------------------------------------=>\n");
     }
     printf("\033[0m");
 }
 
+//MAIN Function - code start from here >
 int main()
 {
     system("cls");
@@ -62,42 +77,38 @@ int main()
                             "CUP", "DOP", "TTD", "BMD", "NIO",
                             "ARS", "BRL", "CLP", "COP", "PEN",
                             "VES", "BOB", "PYG", "UYU", "GYD",
-                            "SRD", "ECS", "FKP", "AWG", "BZD"//
-                           };
+                            "SRD", "ECS", "FKP", "AWG", "BZD"
+                           };//currency names
     float bdt_to_any[]= {1,0.066,0.76,12.08,0.034,0.33,0.25,0.88,139.82,2.69,0.043,0.012,0.035,384.99,
                          220.18,1.34,0.52,4.25,2.95,0.033,0.0085,0.0073,0.0081,0.10,0.098,0.063,3.25,0.039,0.21,0.017,0.063,0.042,0.34,1.22,1,
                          1.25,0.28,0.17,6.79,1.34,0.093,0.50,0.10,22.84,33.93,10.98,0.12,0.19,0.029,3.29,
                          0.014,0.015,0.021,0.033,0.025,0.022,0.077,1.1152,1.02,0.17,0.007,0.014,1.115,15.79,0.0091,0.0091,0.012,0.16,0.072,4.87,
                          0.22,0.08,0.0091,1.41,0.0091,0.22,0.52,0.062,0.0091,0.33,3.19,0.045,8.04,36.12,0.034,0.303,0.063,66.33,0.35,1.91,0.35,
                          228.94,0.0072,0.016,0.018
-                        };
+                        };//currency rates
     float any_to_bdt[200];
 
     //welcome heading
-
     printf("\033[0;36m");
     printf("\t\t\t\t\t\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////\n");
     printf("\t\t\t\t\t    %c Welcome to Currency Converter %c\n",175,174);
     printf("\t\t\t\t\t////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n");
     printf("\033[0m");
 
-    while(1)
-    {
+    
         int from,to,continent_from,continent_to;
         float amount;
         int ch;
-        printf("\033[32m");
-
-        printf("*****************************************\n");
-        printf("           MENU OPTIONS                 \n");
-        printf("[1] SEARCH TO CONVERT                 \n");
-        printf("[2] MANUAL CONVERSION                 \n");
-        printf("[3] CURRENCY LIST                     \n");
-        printf("*****************************************\n");
-        printf("Enter Choice-->> ");
-
-        // Reset text color to default
-        printf("\033[0m");
+        printf("\033[32m");//Green color code
+        printf("\n");
+        printf("\t\t\t\t\t\t*************************\n");
+        printf("\t\t\t\t\t\t*    %c MENU OPTIONS %c   *\n",175,174);
+        printf("\t\t\t\t\t\t* [1] SEARCH TO CONVERT *\n");
+        printf("\t\t\t\t\t\t* [2] MANUAL CONVERSION *\n");
+        printf("\t\t\t\t\t\t* [3] CURRENCY LIST     *\n");
+        printf("\t\t\t\t\t\t*************************\n");
+        printf("\t\t\t\t\t\t%c Enter Choice -> ",254);
+        printf("\033[0m");// Reset text color to default
 
         scanf("%d",&ch);
         if(ch==1)
@@ -108,20 +119,22 @@ int main()
             char name2[3];
             int num_currencies = 96;
 
-            printf("-------------------------------------------------------------------------------------------");
-            printf("\nPopular Currencies of the Day: ");
+            //time.h - random currency generator
+            printf("\033[0;34m");
+            printf("\n\t----------------------------------------------------------------------------------------------\n");
+            printf("\t| Popular Currencies of the Day: |");
             for (int i = 0; i < 10; i++)
             {
                 int random_index = rand() % num_currencies;
-                printf("%c %s ", 254,currency_name[random_index-1]);
+                printf(" %s |",currency_name[random_index-1]);
             }
-            printf("\n-------------------------------------------------------------------------------------------");
-            printf("\n\n");
+            printf("\n\t----------------------------------------------------------------------------------------------\n");
+            printf("\033[0m");
 
 
-            printf("Enter the name of the currency you want to convert from:(usd,bdt,cny,etc....)%c%c",254,175);
+            printf("\n\t%c Enter the name of the currency you want to convert FROM -> ",254);
 
-            scanf("%s",&name1);
+            scanf("%s",name1);
 
             for(int i = 0; i<3; i++)
             {
@@ -138,18 +151,20 @@ int main()
                 }
                 else if(i==94)
                 {
-                    printf("CURRENCY NOT FOUND\n");
+                    printf("\033[0;31m\n\tCURRENCY NOT FOUND!\n\033[0m");
                     exit_menu();
                 }
             }
             if(found1)
             {
-                printf("------------------------------\n");
-                printf("SELECTED CURRENCY IS || %s ||\n",currency_name[from-1]);
-                printf("------------------------------\n");
+                printf("\033[0;32m");
+                printf("\t------------------------------\n");
+                printf("\tSELECTED CURRENCY IS || %s ||\n",currency_name[from-1]);
+                printf("\t------------------------------\n");
+                printf("\033[0m");
             }
-            printf("Enter name of the currency you want to convert to-->");
-            scanf("%s",&name2);
+            printf("\n\t%c Enter name of the currency you want to convert TO -> ",254);
+            scanf("%s",name2);
             for(int i = 0; i<3; i++)
             {
                 name2[i]=toupper(name2[i]);
@@ -165,18 +180,21 @@ int main()
                 }
                 else if(i==94)
                 {
-                    printf("CURRENCY NOT FOUND\n");
+                    printf("\033[0;31m\n\tCURRENCY NOT FOUND!\n\033[0m");
                     exit_menu();
                 }
             }
             if(found2)
             {
-                printf("------------------------------\n");
-                printf("SELECTED CURRENCY IS || %s ||\n",currency_name[to-1]);
-                printf("------------------------------\n");
+                printf("\033[0;32m");
+                printf("\t------------------------------\n");
+                printf("\tSELECTED CURRENCY IS || %s ||\n",currency_name[to-1]);
+                printf("\t------------------------------\n");
+                printf("\033[0m");
             }
-            printf("Enter amount-->");
+            printf("\n\t%c Enter amount -> ",254);
             scanf("%f",&amount);
+            
             currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
             exit_menu();
         }
@@ -186,8 +204,6 @@ int main()
 
             //Taking input continent_from and from
             continents();
-
-
             scanf("%d",&continent_from);
 
             switch (continent_from)
@@ -215,22 +231,24 @@ int main()
                 error_handling();
                 break;
             }
-            printf("\033[0;31m");
-            printf("\033[0;44m");
+
+            printf("\033[1;36m");
             printf("\n\n %c Please Choose & Enter a Number %c\n",254,254);
             printf(" ------------------------------------\n");
-            printf(" %c Currency To Convert From -> ",175);
-            scanf("%d",&from);
+            printf(" %c Currency To Convert FROM -> ",175);
             printf("\033[0m");
-            if(continent_from==1&&from>20||from<1)
+            scanf("%d",&from);
+            if(continent_from==1 && from>20 || from<1)
             {
 
                 error_handling();
             }
-            else if(continent_from!=1&&from>15||from<1)
+            else if(continent_from!=1 && from>15 || from<1)
             {
                 error_handling();
             }
+
+
             //Taking input continent_to and to
             continents();
             scanf("%d",&continent_to);
@@ -260,25 +278,25 @@ int main()
                 error_handling();
                 break;
             }
-            printf("\033[0;42m");
+            printf("\033[1;36m");
             printf("\n\n %c Please Choose & Enter a Number %c\n",254,254);
             printf(" ------------------------------------\n");
-            printf(" %c Currency To Convert To -> ",175);
-            scanf("%d",&to);
+            printf(" %c Currency To Convert TO -> ",175);
             printf("\033[0m");
-            if(to>20||to<1&&continent_to==1)
+            scanf("%d",&to);
+            if(to>20 || to<1 && continent_to==1)
             {
                 error_handling();
             }
-            else if(to>15||to<1&&continent_to>1)
+            else if(to>15 || to<1 && continent_to>1)
             {
                 error_handling();
             }
 
-            printf("\033[0;41m");
-            printf("\n %c Please Enter The Amount To CONVERT -> ",175);
-            scanf("%f",&amount);
+            printf("\033[1;32m");
+            printf("\n\n %c Please Enter The Amount To CONVERT -> ",175);
             printf("\033[0m");
+            scanf("%f",&amount);
             switch (continent_from)
             {
             case 1:
@@ -330,30 +348,29 @@ int main()
         }
         else if(ch==3)
         {
-            printf("||ALL CURRENCY LIST||\n");
+            printf("\033[0;36m||ALL CURRENCY LIST||\n\n\033[0m");
             for(int i = 0; i<95; i++)
             {
-                printf("|%d| %s \n",i+1,currency_name[i]);
+                printf(" |%02d| %s \n",i+1,currency_name[i]);
             }
             getchar();
             exit_menu();
-
         }
         else
         {
-
             error_handling();
         }
 
-    }
+    
     return 0;
 
 
 }
 
+//Function Definition
 void continents()
 {
-    printf("\033[0;32m");
+    printf("\033[0;34m");
     printf("\n");
     printf("   ------------   --------------   --------------   -----------------   ----------------------   ---------------------\n");
     printf("   | (1) ASIA |   | (2) EUROPE |   | (3) AFRICA |   | (4) AUSTRALIA |   | (5) NORTH AMERICA  |   | (6) SOUTH AMERICA | \n");
@@ -504,26 +521,29 @@ void error_handling()
 {
     int c;
     while((c=getchar())!='\n'&&c!=EOF);
-    printf("\033[0;41m\n\tSomething is Wrong!!\n\033[0m");
-    printf("\033[0;45m");
+    printf("\033[1;31m\n\tSomething is Wrong!!\n\033[0m");
+    printf("\033[0;44m");
     char close;
-    printf("\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit...\n %c ",254,175);
-    scanf(" %c",&close);
+    printf("\n\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit... -> ",254);
     printf("\033[0m");
+    scanf(" %c",&close);
     if (close == 'x'||close == 'X')
     {
-        printf("Thank You <3\n");
+        printf("\033[1;31m\nThank You <3\n\033[0m");
         exit(0);
     }
     else if (close == '?')
     {   system("cls");
+        printf("\033[1;31m");
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
-        printf(" A Project by \"CODE MINERS\"!\n\n");
+        printf(" A Project by \"CODE MINERS\"!\n");
+        printf(" Daffodil International University\n\n");
         printf(" 1. Shishir Karmokar - 254\n");
         printf(" 2. Gulam Murshed - 336\n");
         printf(" 3. Anamika Akter - 101\n");
         printf(" 4. Bijoy Krishna Sarker - 219\n\n");
+        printf("\033[0m");
         exit_menu();
     }
     else if (close == '+')
@@ -542,25 +562,28 @@ void exit_menu()
 {
     int c;
     while((c=getchar())!='\n'&&c!=EOF);
-    printf("\033[0;45m");
+    printf("\033[0;44m");
     char close;
-    printf("\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit...\n %c ",254,175);
-    scanf(" %c",&close);
+    printf("\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit... -> ",254);
     printf("\033[0m");
+    scanf(" %c",&close);
     if (close == 'x'||close == 'X')
     {
-        printf("Thank You <3\n");
+        printf("\033[1;31m\nThank You <3\n\033[0m");
         exit(0);
     }
     else if (close == '?')
     {   system("cls");
+        printf("\033[1;31m");
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
-        printf(" A Project by \"CODE MINERS\"!\n\n");
+        printf(" A Project by \"CODE MINERS\"!\n");
+        printf(" Daffodil International University\n\n");
         printf(" 1. Shishir Karmokar - 254\n");
         printf(" 2. Gulam Murshed - 336\n");
         printf(" 3. Anamika Akter - 101\n");
         printf(" 4. Bijoy Krishna Sarker - 219\n\n");
+        printf("\033[0m");
         exit_menu();
     }
     else if (close == '+')
@@ -573,6 +596,5 @@ void exit_menu()
 
     }
     printf("\033[0m");
-
 
 }
