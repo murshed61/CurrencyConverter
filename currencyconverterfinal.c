@@ -341,6 +341,7 @@ int main()
         }
         else
         {
+
             error_handling();
         }
 
@@ -501,15 +502,16 @@ void south_america_currencys()
 }
 void error_handling()
 {
-    system("cls");
+    int c;
+    while((c=getchar())!='\n'&&c!=EOF);
     printf("\033[0;41m\n\tSomething is Wrong!!\n\033[0m");
     printf("\033[0;45m");
     int close;
-    printf("\n %c Enter   (1) for More Conversion   (2) for About us   (3) for Exit...\n %c ",254,175);
-    scanf("%d",&close);
+    printf("\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit...\n %c ",254,175);
+    scanf("%c ",&close);
     getchar();
     printf("\033[0m");
-    if (close == 3)
+    if (close == 'x'||close == 'X')
     {
         printf("Thank You <3\n");
         exit(0);
@@ -531,7 +533,6 @@ void error_handling()
     }
     else
     {
-        printf("\n\tSomething is Wrong!!\n");
         error_handling();
 
     }
@@ -541,18 +542,20 @@ void error_handling()
 }
 void exit_menu()
 {
+    int c;
+    while((c=getchar())!='\n'&&c!=EOF);
     printf("\033[0;45m");
-    int close;
-    printf("\n %c Enter   (1) for More Conversion   (2) for About us   (3) for Exit...\n %c ",254,175);
-    scanf("%d",&close);
+    char close;
+    printf("\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit...\n %c ",254,175);
+    scanf("%c ",&close);
     getchar();
     printf("\033[0m");
-    if (close == 3)
+    if (close == 'x'||close == 'X')
     {
         printf("Thank You <3\n");
         exit(0);
     }
-    else if (close == 2)
+    else if (close == '?')
     {   system("cls");
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
@@ -563,13 +566,12 @@ void exit_menu()
         printf(" 4. Bijoy Krishna Sarker - 219\n\n");
         exit_menu();
     }
-    else if (close == 1)
+    else if (close == '+')
     {
         main();
     }
     else
     {
-        printf("\n\tSomething is Wrong!!\n");
         error_handling();
 
     }
