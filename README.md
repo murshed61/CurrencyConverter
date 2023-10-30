@@ -11,4 +11,4 @@ then When we got the USD value, we used USD to ANY logic , where ANY is the curr
 Why the project is useful?
 = It improves understanding of arrays,and logical thinking. There are multiple ways to tackle this problem so we can always try to improve our efficiency. 
 Who maintains and contributes to the project?
-= Maintaining is mostly done by me, Gulam Murshed. Other contributing members are Shisir, Anamika and Bijoy.
+= Maintaining is done by Gulam Murshed,Shisir, Anamika and Bijoy.
