@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<conio.h>
 #include<stdbool.h>
 #include<ctype.h>
 #include <time.h>
@@ -24,7 +23,7 @@ int main()
 {
     system("cls");
     const char* fileadrs_for_all_currency = "Currency_List.txt";//Specify exact file location here
-    char *currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
+    const char* currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
                             "THB","TRY", "RUB", "IDR", "PKR","MYR","SGD","ILS","IRR",
                             "VND","JPY","PHP","KZT","LKR","AED","EUR", "GBP", "CHF", "SEK", "NOK",
                             "DKK", "HUF", "PLN", "CZK", "BGN",
@@ -48,7 +47,11 @@ int main()
                          0.22,0.08,0.0091,1.41,0.0091,0.22,0.52,0.062,0.0091,0.33,3.19,0.045,8.04,36.12,0.034,0.303,0.063,66.33,0.35,1.91,0.35,
                          228.94,0.0072,0.016,0.018
                         };//currency rates
-    float any_to_bdt[200];
+    float any_to_bdt[95];
+    for(int i=0; i<95; i++)
+    {
+        any_to_bdt[i]=1/bdt_to_any[i];
+    }
 
     //welcome heading
     printf("\033[0;36m");
@@ -77,8 +80,8 @@ int main()
     {
 
         srand(time(NULL));
-        char name1[3];
-        char name2[3];
+        char name1[4];
+        char name2[4];
         int num_currencies = 95;
 
         //time.h - random currency generator
@@ -114,7 +117,7 @@ int main()
             else if(i==94)
             {
                 printf("\033[0;31m\n\tCURRENCY NOT FOUND!\n\033[0m");
-                exit_menu();
+                error_handling();
             }
         }
         if(found1)
@@ -188,7 +191,6 @@ int main()
         case 6:
             south_america_currencys();
             break;
-
         default:
             error_handling();
             break;
@@ -202,7 +204,6 @@ int main()
         scanf("%d",&from);
         if(continent_from==1 && (from>20 || from<1))
         {
-
             error_handling();
         }
         else if(continent_from!=1 && (from>15 || from<1))
@@ -255,56 +256,57 @@ int main()
             error_handling();
         }
 
-        printf("\033[1;32m");
-        printf("\n\n %c Please Enter The Amount To CONVERT -> ",175);
-        printf("\033[0m");
-        scanf("%f",&amount);
         switch (continent_from)
         {
         case 1:
-            from=from;
+            from=from;//asia
             break;
         case 2:
-            from=from+20;
+            from=from+20;//europe
             break;
         case 3:
-            from=from+35;
+            from=from+35;//africa
             break;
         case 4:
-            from = from+50;
+            from = from+50;//Austraila
             break;
         case 5:
-            from = from+65;
+            from = from+65;//North america
             break;
         case 6:
-            from = from+80;
+            from = from+80;//south america
             break;
         }
         switch (continent_to)
         {
         case 1:
-            to=to;
+            to=to;//
             break;
         case 2:
-            to=to+20;
+            to=to+20;//
             break;
         case 3:
-            to=to+35;
+            to=to+35;//
             break;
         case 4:
-            to=to+50;
+            to=to+50;//
             break;
         case 5:
-            to=to+65;
+            to=to+65;//
             break;
         case 6:
-            to=to+80;
+            to=to+80;//
             break;
         }
-        if(to<=0&&to>95)
-        {
-            error_handling();
-        }
+        printf("\033[0;32m");
+            printf("\n\t------------------------------\n");
+            printf("\t   || %s || TO || %s ||\n",currency_name[from-1],currency_name[to-1]);
+            printf("\t------------------------------\n");
+            printf("\033[0m");
+        printf("\033[1;32m");
+        printf("\n\n %c Please Enter The Amount To CONVERT -> ",175);
+        printf("\033[0m");
+        scanf("%f",&amount);
         currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
         exit_menu();
     }
@@ -322,7 +324,8 @@ int main()
             char buffer[1024];
             while(fgets(buffer,sizeof(buffer),files)!=NULL)
             {
-                printf("%s",buffer);
+
+                printf("\033[1;36m%s\033[0m",buffer);
             }
         }
         fclose(files);
@@ -544,10 +547,6 @@ void exit_menu()
 }
 void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
 {
-    for(int i=0; i<95; i++)
-    {
-        any_to_bdt[i]=1/bdt_to_any[i];
-    }
 
     printf("\033[0;31m");
     if(from==to)//same currency
@@ -572,7 +571,7 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
     }
     else if(from!=to)//ANY TO ANY
     {
-        float anyToBdt = any_to_bdt[from-1]*value;
+        float anyToBdt = any_to_bdt[from-1]*value;//inr<->usd
         float calculated_any = bdt_to_any[to-1]*anyToBdt;
 
         printf("\n\n\t<=--------------------------------------------=>\n");
