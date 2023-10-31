@@ -17,51 +17,11 @@ void south_america_currencys();
 void error_handling();
 void exit_menu();
 
-//Currency Conversion Function
-void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
-{
-    for(int i=0; i<95; i++)
-    {
-        any_to_bdt[i]=1/bdt_to_any[i];
-    }
-
-    printf("\033[1;31m");
-    if(from==to)//same currency
-    {
-        printf("\n\n\t<=--------------------------------------------=>\n");
-        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],value,currency_name[to-1]);
-        printf("\t<=--------------------------------------------=>\n");
-    }
-    else if(from==1)//bdt_to_any
-    {
-        float calculated_any_value=bdt_to_any[to-1]*value;
-        printf("\n\n\t<=--------------------------------------------=>\n");
-        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any_value,currency_name[to-1]);
-        printf("\t<=--------------------------------------------=>\n");
-    }
-    else if(to==1)//any_to_bdt
-    {
-        float calculated_bdt_value = any_to_bdt[from-1]*value;
-        printf("\n\n\t<=--------------------------------------------=>\n");
-        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_bdt_value,currency_name[to-1]);
-        printf("\t<=--------------------------------------------=>\n");
-    }
-    else if(from!=to)//ANY TO ANY
-    {
-        float anyToBdt = any_to_bdt[from-1]*value;
-        float calculated_any = bdt_to_any[to-1]*anyToBdt;
-
-        printf("\n\n\t<=--------------------------------------------=>\n");
-        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any,currency_name[to-1]);
-        printf("\t<=--------------------------------------------=>\n");
-    }
-    printf("\033[0m");
-}
-
 //MAIN Function - code start from here >
 int main()
 {
     system("cls");
+    const char* fileadrs_for_all_currency = "Currency List.txt";//Specify exact file location here
     char *currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
                             "THB","TRY", "RUB", "IDR", "PKR","MYR","SGD","ILS","IRR",
                             "VND","JPY","PHP","KZT","LKR","AED","EUR", "GBP", "CHF", "SEK", "NOK",
@@ -95,7 +55,7 @@ int main()
     printf("\t\t\t\t\t////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n");
     printf("\033[0m");
 
-    
+
         int from,to,continent_from,continent_to;
         float amount;
         int ch;
@@ -117,7 +77,7 @@ int main()
             srand(time(NULL));
             char name1[3];
             char name2[3];
-            int num_currencies = 96;
+            int num_currencies = 95;
 
             //time.h - random currency generator
             printf("\033[0;34m");
@@ -126,7 +86,7 @@ int main()
             for (int i = 0; i < 10; i++)
             {
                 int random_index = rand() % num_currencies;
-                printf(" %s |",currency_name[random_index-1]);
+                printf(" %s |",currency_name[random_index]);
             }
             printf("\n\t----------------------------------------------------------------------------------------------\n");
             printf("\033[0m");
@@ -194,7 +154,7 @@ int main()
             }
             printf("\n\t%c Enter amount -> ",254);
             scanf("%f",&amount);
-            
+
             currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
             exit_menu();
         }
@@ -349,10 +309,22 @@ int main()
         else if(ch==3)
         {
             printf("\033[0;36m||ALL CURRENCY LIST||\n\n\033[0m");
-            for(int i = 0; i<95; i++)
+            FILE* files = fopen(fileadrs_for_all_currency,"r");
+            if(files==NULL)
             {
-                printf(" |%02d| %s \n",i+1,currency_name[i]);
+                printf("Failed to open FILE\n");
+                error_handling();
             }
+            else
+            {
+                char buffer[1024];
+                while(fgets(buffer,sizeof(buffer),files)!=NULL)
+                {
+                    printf("%s",buffer);
+                }
+            }
+            fclose(files);
+            printf("\n\nPress enter to continue....");
             getchar();
             exit_menu();
         }
@@ -361,7 +333,7 @@ int main()
             error_handling();
         }
 
-    
+
     return 0;
 
 
@@ -598,3 +570,44 @@ void exit_menu()
     printf("\033[0m");
 
 }
+//Currency Conversion Function
+void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
+{
+    for(int i=0; i<95; i++)
+    {
+        any_to_bdt[i]=1/bdt_to_any[i];
+    }
+
+    printf("\033[1;31m");
+    if(from==to)//same currency
+    {
+        printf("\n\n\t<=--------------------------------------------=>\n");
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],value,currency_name[to-1]);
+        printf("\t<=--------------------------------------------=>\n");
+    }
+    else if(from==1)//bdt_to_any
+    {
+        float calculated_any_value=bdt_to_any[to-1]*value;
+        printf("\n\n\t<=--------------------------------------------=>\n");
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any_value,currency_name[to-1]);
+        printf("\t<=--------------------------------------------=>\n");
+    }
+    else if(to==1)//any_to_bdt
+    {
+        float calculated_bdt_value = any_to_bdt[from-1]*value;
+        printf("\n\n\t<=--------------------------------------------=>\n");
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_bdt_value,currency_name[to-1]);
+        printf("\t<=--------------------------------------------=>\n");
+    }
+    else if(from!=to)//ANY TO ANY
+    {
+        float anyToBdt = any_to_bdt[from-1]*value;
+        float calculated_any = bdt_to_any[to-1]*anyToBdt;
+
+        printf("\n\n\t<=--------------------------------------------=>\n");
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any,currency_name[to-1]);
+        printf("\t<=--------------------------------------------=>\n");
+    }
+    printf("\033[0m");
+}
+
