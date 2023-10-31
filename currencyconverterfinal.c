@@ -200,12 +200,12 @@ int main()
         printf(" %c Currency To Convert FROM -> ",175);
         printf("\033[0m");
         scanf("%d",&from);
-        if(continent_from==1 && from>20 || from<1)
+        if(continent_from==1 && (from>20 || from<1))
         {
 
             error_handling();
         }
-        else if(continent_from!=1 && from>15 || from<1)
+        else if(continent_from!=1 && (from>15 || from<1))
         {
             error_handling();
         }
@@ -246,11 +246,11 @@ int main()
         printf(" %c Currency To Convert TO -> ",175);
         printf("\033[0m");
         scanf("%d",&to);
-        if(to>20 || to<1 && continent_to==1)
+        if((to>20 || to<1) && continent_to==1)
         {
             error_handling();
         }
-        else if(to>15 || to<1 && continent_to>1)
+        else if((to>15 || to<1) && continent_to>1)
         {
             error_handling();
         }
