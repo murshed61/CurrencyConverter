@@ -23,7 +23,7 @@ int main()
 {
     system("cls");
     const char* fileadrs_for_all_currency = "Currency_List.txt";//Specify exact file location here
-    const char* currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
+    char* currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
                             "THB","TRY", "RUB", "IDR", "PKR","MYR","SGD","ILS","IRR",
                             "VND","JPY","PHP","KZT","LKR","AED","EUR", "GBP", "CHF", "SEK", "NOK",
                             "DKK", "HUF", "PLN", "CZK", "BGN",
