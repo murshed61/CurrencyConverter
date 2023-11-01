@@ -18,7 +18,7 @@ int main()
     system("cls");
     const char* history = "history.txt";
     const char* fileadrs_for_all_currency = "Currency_List.txt";//Specify exact file location here
-    const char* file_s_for_currency[]= {"Asia_currency.txt","Europe_currency.txt","Africa_currency.txt","Australia.txt","North_america_currency.txt","South_america_currency.txt"};
+    const char* file_s_for_currency[]= {"Asia_currency.txt","Europe_currency.txt","Africa_currency.txt","Australia.txt","North_america_currency.txt","South_america_currency.txt"};//location of other currenices
     char *currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
                             "THB","TRY", "RUB", "IDR", "PKR","MYR","SGD","ILS","IRR",
                             "VND","JPY","PHP","KZT","LKR","AED","EUR", "GBP", "CHF", "SEK", "NOK",
