@@ -16,6 +16,7 @@ void exit_menu();
 int main()
 {
     system("cls");
+    const char* history = "history.txt";
     const char* fileadrs_for_all_currency = "Currency_List.txt";//Specify exact file location here
     const char* file_s_for_currency[]= {"Asia_currency.txt","Europe_currency.txt","Africa_currency.txt","Australia.txt","North_america_currency.txt","South_america_currency.txt"};
     char *currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
@@ -62,6 +63,7 @@ int main()
     printf("\t\t\t\t\t\t* [1] SEARCH TO CONVERT *\n");
     printf("\t\t\t\t\t\t* [2] MANUAL CONVERSION *\n");
     printf("\t\t\t\t\t\t* [3] CURRENCY LIST     *\n");
+    printf("\t\t\t\t\t\t* [4] Show History      *\n");
     printf("\t\t\t\t\t\t*************************\n");
     printf("\t\t\t\t\t\t%c Enter Choice -> ",254);
     printf("\033[0m");// Reset text color to default
@@ -291,6 +293,47 @@ int main()
         getchar();
         exit_menu();
     }
+    else if(ch==4)
+    {
+        FILE* history=fopen("history.txt","r");
+        if(history==NULL)
+        {
+            printf("Failed to Open FILE\n");
+            error_handling();
+        }
+        else
+        {
+            char hi_buffer[1024];
+            while(fgets(hi_buffer,sizeof(hi_buffer),history)!=NULL)
+            {
+                printf("%s",hi_buffer);
+            }
+            printf("\n");
+        }
+        fclose(history);
+        printf("Press [1] to clear history [ANY]Continue\n-->>>");
+        int ch2;
+        scanf("%d",&ch2);
+        if(ch2==1)
+        {
+            FILE* history=fopen("history.txt","w");
+            if(history==NULL)
+            {
+                printf("Could not access memory\n");
+                error_handling();
+            }
+            else
+            {
+                printf("Memory cleared\n");
+                exit_menu();
+            }
+        }
+        else
+        {
+        exit_menu();
+        }
+        
+    }
     else
     {
         error_handling();
@@ -419,6 +462,11 @@ void exit_menu()
 //Currency Conversion Function
 void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
 {
+    FILE* file=fopen("history.txt","a");
+    if(file==NULL)
+    {
+        printf("Memory could not be accessed\n");
+    }
     for(int i=0; i<95; i++)
     {
         any_to_bdt[i]=1/bdt_to_any[i];
@@ -430,6 +478,7 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
         printf("\n\n\t<=--------------------------------------------=>\n");
         printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],value,currency_name[to-1]);
         printf("\t<=--------------------------------------------=>\n");
+        fprintf(file,"\n%.2f %s TO %s = %.2f %s",value,currency_name[from-1],currency_name[to-1],value,currency_name[to-1]);
     }
     else if(from==1)//bdt_to_any
     {
@@ -437,6 +486,7 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
         printf("\n\n\t<=--------------------------------------------=>\n");
         printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any_value,currency_name[to-1]);
         printf("\t<=--------------------------------------------=>\n");
+        fprintf(file,"\n%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any_value,currency_name[to-1]);
     }
     else if(to==1)//any_to_bdt
     {
@@ -444,6 +494,7 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
         printf("\n\n\t<=--------------------------------------------=>\n");
         printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_bdt_value,currency_name[to-1]);
         printf("\t<=--------------------------------------------=>\n");
+        fprintf(file,"\n%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_bdt_value,currency_name[to-1]);
     }
     else if(from!=to)//ANY TO ANY
     {
@@ -453,7 +504,12 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
         printf("\n\n\t<=--------------------------------------------=>\n");
         printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any,currency_name[to-1]);
         printf("\t<=--------------------------------------------=>\n");
+        fprintf(file,"\n%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any,currency_name[to-1]);
     }
     printf("\033[0m");
+    fclose(file);
+    
+    
+    
 }
 
