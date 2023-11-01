@@ -1,0 +1,17 @@
+|| NORTHA AMERICA's Available Currencys ||
+ ------------------------------------
+  [1] United States Dollar (USD)
+  [2] Canadian Dollar (CAD)
+  [3] Mexican Peso (MXN)
+  [4] Guatemalan Quetzal (GTQ)
+  [5] Costa Rican Colon (CRC)
+  [6] Honduran Lempira (HNL)
+  [7] Salvadoran Colon (SVC)
+  [8] Panamanian Balboa (PAB)
+  [9] Jamaican Dollar (JMD)
+ [10] Bahamian Dollar (BSD)
+ [11] Cuban Peso (CUP)
+ [12] Dominican Peso (DOP)
+ [13] Trinidad and Tobago Dollar (TTD)
+ [14] Bermudian Dollar (BMD)
+ [15] Nicaraguan Cordoba (NIO)

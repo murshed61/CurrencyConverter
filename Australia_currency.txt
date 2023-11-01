@@ -1,0 +1,17 @@
+|| AUSTRALIA's Available Currencys ||
+ ------------------------------------
+  [1] Australian Dollar (AUD)
+  [2] New Zealand Dollar (NZD)
+  [3] Fijian Dollar (FJD)
+  [4] Papua New Guinean Kina (PGK)
+  [5] Samoan Tala (WST)
+  [6] Tongan Pa'anga (TOP)
+  [7] Solomon Islands Dollar (SBD)
+  [8] Vanuatu Vatu (VUV)
+  [9] New Caledonian Franc (XPF)
+ [10] Nauruan Dollar (NAD)
+ [11] Cook Islands Dollar (CKD)
+ [12] Tuvaluan Dollar (TVD)
+ [13] Ni-Vanuatu Vatu (VUV)
+ [14] Kiribati Dollar (KID)
+ [15] Palauan Dollar (PWG)

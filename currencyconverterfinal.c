@@ -6,24 +6,19 @@
 #include <time.h>
 
 //Function Declaration
+void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[]);
 void continents();
-void asia_currencys();
-void europe_currencys();
-void africa_currencys();
-void australia_currencys();
-void north_america_currencys();
-void south_america_currencys();
+void currency_name_of_continent(int choice,const char* file_s_for_currency[]);
 void error_handling();
 void exit_menu();
-void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[]);
-
 
 //MAIN Function - code start from here >
 int main()
 {
     system("cls");
     const char* fileadrs_for_all_currency = "Currency_List.txt";//Specify exact file location here
-    char* currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
+    const char* file_s_for_currency[]= {"Asia_currency.txt","Europe_currency.txt","Africa_currency.txt","Australia.txt","North_america_currency.txt","South_america_currency.txt"};
+    char *currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
                             "THB","TRY", "RUB", "IDR", "PKR","MYR","SGD","ILS","IRR",
                             "VND","JPY","PHP","KZT","LKR","AED","EUR", "GBP", "CHF", "SEK", "NOK",
                             "DKK", "HUF", "PLN", "CZK", "BGN",
@@ -47,11 +42,7 @@ int main()
                          0.22,0.08,0.0091,1.41,0.0091,0.22,0.52,0.062,0.0091,0.33,3.19,0.045,8.04,36.12,0.034,0.303,0.063,66.33,0.35,1.91,0.35,
                          228.94,0.0072,0.016,0.018
                         };//currency rates
-    float any_to_bdt[95];
-    for(int i=0; i<95; i++)
-    {
-        any_to_bdt[i]=1/bdt_to_any[i];
-    }
+    float any_to_bdt[200];
 
     //welcome heading
     printf("\033[0;36m");
@@ -64,7 +55,7 @@ int main()
     int from,to,continent_from,continent_to;
     float amount;
     int ch;
-    printf("\033[1;32m");//Green color code
+    printf("\033[32m");//Green color code
     printf("\n");
     printf("\t\t\t\t\t\t*************************\n");
     printf("\t\t\t\t\t\t*    %c MENU OPTIONS %c   *\n",175,174);
@@ -80,8 +71,8 @@ int main()
     {
 
         srand(time(NULL));
-        char name1[4];
-        char name2[4];
+        char name1[3];
+        char name2[3];
         int num_currencies = 95;
 
         //time.h - random currency generator
@@ -117,7 +108,7 @@ int main()
             else if(i==94)
             {
                 printf("\033[0;31m\n\tCURRENCY NOT FOUND!\n\033[0m");
-                error_handling();
+                exit_menu();
             }
         }
         if(found1)
@@ -170,31 +161,15 @@ int main()
         //Taking input continent_from and from
         continents();
         scanf("%d",&continent_from);
-
-        switch (continent_from)
+        if(continent_from>0&&continent_from<=6)
         {
-        case 1:
-            asia_currencys();
-            break;
-        case 2:
-            europe_currencys();
-            break;
-        case 3:
-            africa_currencys();
-            break;
-        case 4:
-            australia_currencys();
-            break;
-        case 5:
-            north_america_currencys();
-            break;
-        case 6:
-            south_america_currencys();
-            break;
-        default:
-            error_handling();
-            break;
+            currency_name_of_continent(continent_from,file_s_for_currency);
         }
+        else
+        {
+            error_handling();
+        }
+
 
         printf("\033[1;36m");
         printf("\n\n %c Please Choose & Enter a Number %c\n",254,254);
@@ -202,11 +177,11 @@ int main()
         printf(" %c Currency To Convert FROM -> ",175);
         printf("\033[0m");
         scanf("%d",&from);
-        if(continent_from==1 && (from>20 || from<1))
+        if(continent_from==1 && from>20 || from<1)
         {
             error_handling();
         }
-        else if(continent_from!=1 && (from>15 || from<1))
+        else if(continent_from!=1 && from>15 || from<1)
         {
             error_handling();
         }
@@ -216,30 +191,13 @@ int main()
         continents();
         scanf("%d",&continent_to);
 
-        switch (continent_to)
+        if(continent_to>0&&continent_to<=6)
         {
-        case 1:
-            asia_currencys();
-            break;
-        case 2:
-            europe_currencys();
-            break;
-        case 3:
-            africa_currencys();
-            break;
-        case 4:
-            australia_currencys();
-            break;
-        case 5:
-            north_america_currencys();
-            break;
-        case 6:
-            south_america_currencys();
-            break;
-
-        default:
+            currency_name_of_continent(continent_to,file_s_for_currency);
+        }
+        else
+        {
             error_handling();
-            break;
         }
         printf("\033[1;36m");
         printf("\n\n %c Please Choose & Enter a Number %c\n",254,254);
@@ -247,76 +205,77 @@ int main()
         printf(" %c Currency To Convert TO -> ",175);
         printf("\033[0m");
         scanf("%d",&to);
-        if((to>20 || to<1) && continent_to==1)
+        if(to>20 || to<1 && continent_to==1)
         {
             error_handling();
         }
-        else if((to>15 || to<1) && continent_to>1)
+        else if(to>15 || to<1 && continent_to>1)
         {
             error_handling();
         }
 
+        printf("\033[1;32m");
+        printf("\n\n %c Please Enter The Amount To CONVERT -> ",175);
+        printf("\033[0m");
+        scanf("%f",&amount);
+
         switch (continent_from)
         {
         case 1:
-            from=from;//asia
+            from=from;
             break;
         case 2:
-            from=from+20;//europe
+            from=from+20;
             break;
         case 3:
-            from=from+35;//africa
+            from=from+35;
             break;
         case 4:
-            from = from+50;//Austraila
+            from = from+50;
             break;
         case 5:
-            from = from+65;//North america
+            from = from+65;
             break;
         case 6:
-            from = from+80;//south america
+            from = from+80;
             break;
         }
         switch (continent_to)
         {
         case 1:
-            to=to;//
+            to=to;
             break;
         case 2:
-            to=to+20;//
+            to=to+20;
             break;
         case 3:
-            to=to+35;//
+            to=to+35;
             break;
         case 4:
-            to=to+50;//
+            to=to+50;
             break;
         case 5:
-            to=to+65;//
+            to=to+65;
             break;
         case 6:
-            to=to+80;//
+            to=to+80;
             break;
         }
-        printf("\033[0;32m");
-            printf("\n\t------------------------------\n");
-            printf("\t   || %s || TO || %s ||\n",currency_name[from-1],currency_name[to-1]);
-            printf("\t------------------------------\n");
-            printf("\033[0m");
-        printf("\033[1;32m");
-        printf("\n\n %c Please Enter The Amount To CONVERT -> ",175);
-        printf("\033[0m");
-        scanf("%f",&amount);
+        if(to<=0&&to>95)
+        {
+            error_handling();
+        }
         currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
         exit_menu();
     }
+
     else if(ch==3)
     {
-        printf("\033[0;36m ||ALL CURRENCY LIST||\n\n\033[0m");
+        printf("\033[0;36m||ALL CURRENCY LIST||\n\n\033[0m");
         FILE* files = fopen(fileadrs_for_all_currency,"r");
         if(files==NULL)
         {
-            printf("\033[0;31m\n\tFailed to open FILE!\n\033[0m");
+            printf("Failed to open FILE\n");
             error_handling();
         }
         else
@@ -324,12 +283,11 @@ int main()
             char buffer[1024];
             while(fgets(buffer,sizeof(buffer),files)!=NULL)
             {
-
-                printf("\033[1;36m%s\033[0m",buffer);
+                printf("%s",buffer);
             }
         }
         fclose(files);
-        printf("\033[0;36m\n\n %c Press enter to continue...\033[0m",254);
+        printf("\n\nPress enter to continue....");
         getchar();
         exit_menu();
     }
@@ -337,8 +295,6 @@ int main()
     {
         error_handling();
     }
-
-
     return 0;
 
 
@@ -357,161 +313,39 @@ void continents()
     printf(" %c Enter a Number -> ",175);
     printf("\033[0m");
 }
-void asia_currencys()
+void currency_name_of_continent(int choice,const char* file_s_for_currency[])
 {
     printf("\033[0;35m");
-    printf("\n %c ASIA's Available Currencys %c\n",254,254);
-    printf(" ------------------------------------\n");
-    printf("  [1] Bangladeshi Taka (BDT)\n");
-    printf("  [2] Chinese Yuan (CNY)\n");
-    printf("  [3] Indian Rupee (INR)\n");
-    printf("  [4] South Korean Won (KRW)\n");
-    printf("  [5] Saudi Riyal (SAR)\n");
-    printf("  [6] Thai Baht (THB)\n");
-    printf("  [7] Turkish Lira (TRY)\n");
-    printf("  [8] Russian Ruble (RUB)\n");
-    printf("  [9] Indonesian Rupiah (IDR)\n");
-    printf(" [10] Pakistani Rupee (PKR)\n");
-    printf(" [11] Malaysian Ringgit (MYR)\n");
-    printf(" [12] Singapore Dollar (SGD)\n");
-    printf(" [13] Israeli New Shekel (ILS)\n");
-    printf(" [14] Iranian Rial (IRR)\n");
-    printf(" [15] Vietnamese Dong (VND)\n");
-    printf(" [16] Japanese Yen (JPY)\n");
-    printf(" [17] Philippine Peso (PHP)\n");
-    printf(" [18] Kazakhstani Tenge (KZT)\n");
-    printf(" [19] Sri Lankan Rupee (LKR)\n");
-    printf(" [20] United Arab Emirates Dirham (AED)\n");
-    printf("\033[0m");
-}
-void europe_currencys()
-{
-    printf("\033[0;35m");
-    printf("\n %c EUROPE's Available Currencys %c\n",254,254);
-    printf(" ------------------------------------\n");
-    printf("  [1] Euro (EUR)\n");
-    printf("  [2] British Pound Sterling (GBP)\n");
-    printf("  [3] Swiss Franc (CHF)\n");
-    printf("  [4] Swedish Krona (SEK)\n");
-    printf("  [5] Norwegian Krone (NOK)\n");
-    printf("  [6] Danish Krone (DKK)\n");
-    printf("  [7] Hungarian Forint (HUF)\n");
-    printf("  [8] Polish Zloty (PLN)\n");
-    printf("  [9] Czech Koruna (CZK)\n");
-    printf(" [10] Bulgarian Lev (BGN)\n");
-    printf(" [11] Croatian Kuna (HRK)\n");
-    printf(" [12] Romanian Leu (RON)\n");
-    printf(" [13] Ukrainian Hryvnia (UAH)\n");
-    printf(" [14] Icelandic Krona (ISK)\n");
-    printf(" [15] Serbian Dinar (RSD)\n");
-    printf("\033[0m");
-}
-void africa_currencys()
-{
-    printf("\033[0;35m");
-    printf("\n %c AFRICA's Available Currencys %c\n",254,254);
-    printf(" ------------------------------------\n");
-    printf("  [1] Algerian Dinar (DZD)\n");
-    printf("  [2] Egyptian Pound (EGP)\n");
-    printf("  [3] South African Rand (ZAR)\n");
-    printf("  [4] Nigerian Naira (NGN)\n");
-    printf("  [5] Kenyan Shilling (KES)\n");
-    printf("  [6] Moroccan Dirham (MAD)\n");
-    printf("  [7] Ethiopian Birr (ETB)\n");
-    printf("  [8] Ghanaian Cedi (GHS)\n");
-    printf("  [9] Tanzanian Shilling (TZS)\n");
-    printf(" [10] Ugandan Shilling (UGX)\n");
-    printf(" [11] Rwandan Franc (RWF)\n");
-    printf(" [12] Botswana Pula (BWP)\n");
-    printf(" [13] Zambian Kwacha (ZMW)\n");
-    printf(" [14] Tunisian Dinar (TND)\n");
-    printf(" [15] Zimbabwean Dollar (ZWL)\n");
-    printf("\033[0m");
-}
-void australia_currencys()
-{
-    printf("\033[0;35m");
-    printf("\n %c AUSTRALIA's Available Currencys %c\n",254,254);
-    printf(" ------------------------------------\n");
-    printf("  [1] Australian Dollar (AUD)\n");
-    printf("  [2] New Zealand Dollar (NZD)\n");
-    printf("  [3] Fijian Dollar (FJD)\n");
-    printf("  [4] Papua New Guinean Kina (PGK)\n");
-    printf("  [5] Samoan Tala (WST)\n");
-    printf("  [6] Tongan Pa'anga (TOP)\n");
-    printf("  [7] Solomon Islands Dollar (SBD)\n");
-    printf("  [8] Vanuatu Vatu (VUV)\n");
-    printf("  [9] New Caledonian Franc (XPF)\n");
-    printf(" [10] Nauruan Dollar (NAD)\n");
-    printf(" [11] Cook Islands Dollar (CKD)\n");
-    printf(" [12] Tuvaluan Dollar (TVD)\n");
-    printf(" [13] Ni-Vanuatu Vatu (VUV)\n");
-    printf(" [14] Kiribati Dollar (KID)\n");
-    printf(" [15] Palauan Dollar (PWG)\n");
-    printf("\033[0m");
-}
-void north_america_currencys()
-{
-    printf("\033[0;35m");
-    printf("\n %c NORTHA AMERICA's Available Currencys %c\n",254,254);
-    printf(" ------------------------------------\n");
-    printf("  [1] United States Dollar (USD)\n");
-    printf("  [2] Canadian Dollar (CAD)\n");
-    printf("  [3] Mexican Peso (MXN)\n");
-    printf("  [4] Guatemalan Quetzal (GTQ)\n");
-    printf("  [5] Costa Rican Colon (CRC)\n");
-    printf("  [6] Honduran Lempira (HNL)\n");
-    printf("  [7] Salvadoran Colon (SVC)\n");
-    printf("  [8] Panamanian Balboa (PAB)\n");
-    printf("  [9] Jamaican Dollar (JMD)\n");
-    printf(" [10] Bahamian Dollar (BSD)\n");
-    printf(" [11] Cuban Peso (CUP)\n");
-    printf(" [12] Dominican Peso (DOP)\n");
-    printf(" [13] Trinidad and Tobago Dollar (TTD)\n");
-    printf(" [14] Bermudian Dollar (BMD)\n");
-    printf(" [15] Nicaraguan Cordoba (NIO)\n");
-    printf("\033[0m");
-}
-void south_america_currencys()
-{
-    printf("\033[0;35m");
-    printf("\n %c SOUTH AMERICA's Available Currencys %c\n",254,254);
-    printf(" ------------------------------------\n");
-    printf("  [1] Argentine Peso (ARS)\n");
-    printf("  [2] Brazilian Real (BRL)\n");
-    printf("  [3] Chilean Peso (CLP)\n");
-    printf("  [4] Colombian Peso (COP)\n");
-    printf("  [5] Peruvian Sol (PEN)\n");
-    printf("  [6] Venezuelan Bolivar (VES)\n");
-    printf("  [7] Bolivian Boliviano (BOB)\n");
-    printf("  [8] Paraguayan Guarani (PYG)\n");
-    printf("  [9] Uruguayan Peso (UYU)\n");
-    printf(" [10] Guyanese Dollar (GYD)\n");
-    printf(" [11] Surinamese Dollar (SRD)\n");
-    printf(" [12] Ecuadorian Sucre (ECS)\n");
-    printf(" [13] Falkland Islands Pound (FKP)\n");
-    printf(" [14] Aruban Florin (AWG)\n");
-    printf(" [15] Belize Dollar (BZD)\n");
+    FILE* files=fopen(file_s_for_currency[choice-1],"r");
+    if(files==NULL)
+    {
+        printf("Failed to Open Files\n");
+        error_handling();
+    }
+    else
+    {
+        char buffer[500];
+        while(fgets(buffer,sizeof(buffer),files)!=NULL)
+        {
+            printf("%s",buffer);
+        }
+    }
+    fclose(files);
     printf("\033[0m");
 }
 void error_handling()
 {
-    printf("\033[0;31m\n\tSomething is Wrong!!\n\033[0m");
-    exit_menu(); //function to function call
-
-}
-void exit_menu()
-{
     int c;
     while((c=getchar())!='\n'&&c!=EOF);
+    printf("\033[1;31m\n\tSomething is Wrong!!\n\033[0m");
     printf("\033[0;44m");
     char close;
-    printf("\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit... -> ",254);
+    printf("\n\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit... -> ",254);
     printf("\033[0m");
     scanf(" %c",&close);
     if (close == 'x'||close == 'X')
     {
-        printf("\033[1;31m\n Thank You <3\n\033[0m");
+        printf("\033[1;31m\nThank You <3\n\033[0m");
         exit(0);
     }
     else if (close == '?')
@@ -520,16 +354,12 @@ void exit_menu()
         printf("\033[1;31m");
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
-        printf(" \n\n <> DAFFODIL INTERNATIONAL UNIVERSITY:\n");
-        printf(" -------------------------------------\n\n");
-        printf(" <> PROJECT NAME: [ CURRENCY CONVERTER ]\n\n");
-        printf(" <> GROUP NAME: [ The Code Miners ]\n\n");
-        printf(" <> GROUP MEMBERS:\n\n");
-        printf(" 1. SHISHIR KARMOKAR	ID - 0242320005101254\n");
-        printf(" 2. GULAM MURSHED 	ID - 0242320005101336\n");
-        printf(" 3. ANAMIKA AKTER	ID - 0242320005101101\n");
-        printf(" 4. BIJOY SARKER	ID - 0242320005101219\n\n");
-        printf("    [ A Project by \"CODE MINERS\" ]\n");
+        printf(" A Project by \"CODE MINERS\"!\n");
+        printf(" Daffodil International University\n\n");
+        printf(" 1. Shishir Karmokar - 254\n");
+        printf(" 2. Gulam Murshed - 336\n");
+        printf(" 3. Anamika Akter - 101\n");
+        printf(" 4. Bijoy Krishna Sarker - 219\n\n");
         printf("\033[0m");
         exit_menu();
     }
@@ -545,10 +375,56 @@ void exit_menu()
     printf("\033[0m");
 
 }
+void exit_menu()
+{
+    int c;
+    while((c=getchar())!='\n'&&c!=EOF);
+    printf("\033[0;44m");
+    char close;
+    printf("\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit... -> ",254);
+    printf("\033[0m");
+    scanf(" %c",&close);
+    if (close == 'x'||close == 'X')
+    {
+        printf("\033[1;31m\nThank You <3\n\033[0m");
+        exit(0);
+    }
+    else if (close == '?')
+    {
+        system("cls");
+        printf("\033[1;31m");
+        printf("\n %c About Us %c\n",175,174);
+        printf(" ------------\n");
+        printf(" A Project by \"CODE MINERS\"!\n");
+        printf(" Daffodil International University\n\n");
+        printf(" 1. Shishir Karmokar - 254\n");
+        printf(" 2. Gulam Murshed - 336\n");
+        printf(" 3. Anamika Akter - 101\n");
+        printf(" 4. Bijoy Krishna Sarker - 219\n\n");
+        printf("\033[0m");
+        exit_menu();
+    }
+    else if (close == '+')
+    {
+        main();
+    }
+    else
+    {
+        error_handling();
+
+    }
+    printf("\033[0m");
+
+}
+//Currency Conversion Function
 void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
 {
+    for(int i=0; i<95; i++)
+    {
+        any_to_bdt[i]=1/bdt_to_any[i];
+    }
 
-    printf("\033[0;31m");
+    printf("\033[1;31m");
     if(from==to)//same currency
     {
         printf("\n\n\t<=--------------------------------------------=>\n");
@@ -571,7 +447,7 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
     }
     else if(from!=to)//ANY TO ANY
     {
-        float anyToBdt = any_to_bdt[from-1]*value;//inr<->usd
+        float anyToBdt = any_to_bdt[from-1]*value;
         float calculated_any = bdt_to_any[to-1]*anyToBdt;
 
         printf("\n\n\t<=--------------------------------------------=>\n");
@@ -580,3 +456,4 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
     }
     printf("\033[0m");
 }
+

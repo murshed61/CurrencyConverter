@@ -1,0 +1,17 @@
+|| SOUTH AMERICA's Available Currencys ||
+ ------------------------------------
+  [1] Argentine Peso (ARS)
+  [2] Brazilian Real (BRL)
+  [3] Chilean Peso (CLP)
+  [4] Colombian Peso (COP)
+  [5] Peruvian Sol (PEN)
+  [6] Venezuelan Bolivar (VES)
+  [7] Bolivian Boliviano (BOB)
+  [8] Paraguayan Guarani (PYG)
+  [9] Uruguayan Peso (UYU)
+ [10] Guyanese Dollar (GYD)
+ [11] Surinamese Dollar (SRD)
+ [12] Ecuadorian Sucre (ECS)
+ [13] Falkland Islands Pound (FKP)
+ [14] Aruban Florin (AWG)
+ [15] Belize Dollar (BZD)

@@ -1,0 +1,17 @@
+|| AFRICA's Available Currencys ||
+ ------------------------------------
+  [1] Algerian Dinar (DZD)
+  [2] Egyptian Pound (EGP)
+  [3] South African Rand (ZAR)
+  [4] Nigerian Naira (NGN)
+  [5] Kenyan Shilling (KES)
+  [6] Moroccan Dirham (MAD)
+  [7] Ethiopian Birr (ETB)
+  [8] Ghanaian Cedi (GHS)
+  [9] Tanzanian Shilling (TZS)
+ [10] Ugandan Shilling (UGX)
+ [11] Rwandan Franc (RWF)
+ [12] Botswana Pula (BWP)
+ [13] Zambian Kwacha (ZMW)
+ [14] Tunisian Dinar (TND)
+ [15] Zimbabwean Dollar (ZWL)
