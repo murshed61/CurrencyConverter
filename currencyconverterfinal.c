@@ -216,11 +216,6 @@ int main()
             error_handling();
         }
 
-        printf("\033[1;32m");
-        printf("\n\n %c Please Enter The Amount To CONVERT -> ",175);
-        printf("\033[0m");
-        scanf("%f",&amount);
-
         switch (continent_from)
         {
         case 1:
@@ -270,7 +265,6 @@ int main()
         currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
         exit_menu();
     }
-
     else if(ch==3)
     {
         printf("\033[0;36m||ALL CURRENCY LIST||\n\n\033[0m");
@@ -293,46 +287,11 @@ int main()
         getchar();
         exit_menu();
     }
-    else if(ch==4)
+    else
     {
-        FILE* history=fopen("history.txt","r");
-        if(history==NULL)
-        {
-            printf("Failed to Open FILE\n");
-            error_handling();
-        }
-        else
-        {
-            char hi_buffer[1024];
-            while(fgets(hi_buffer,sizeof(hi_buffer),history)!=NULL)
-            {
-                printf("%s",hi_buffer);
-            }
-            printf("\n");
-        }
-        fclose(history);
-        printf("Press [1] to clear history [ANY]Continue\n-->>>");
-        int ch2;
-        scanf("%d",&ch2);
-        if(ch2==1)
-        {
-            FILE* history=fopen("history.txt","w");
-            if(history==NULL)
-            {
-                printf("Could not access memory\n");
-                error_handling();
-            }
-            else
-            {
-                printf("Memory cleared\n");
-                exit_menu();
-            }
-        }
-        else
-        {
-        exit_menu();
-        }
-        
+        error_handling();
+    }
+
     }
     else
     {
