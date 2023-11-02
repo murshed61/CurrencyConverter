@@ -12,14 +12,16 @@ void currency_name_of_continent(int choice,const char* file_s_for_currency[]);
 void error_handling();
 void exit_menu();
 
+
+
 //MAIN Function - code start from here >
 int main()
 {
     system("cls");
     const char* history = "history.txt";
     const char* fileadrs_for_all_currency = "Currency_List.txt";//Specify exact file location here
-    const char* file_s_for_currency[]= {"Asia_currency.txt","Europe_currency.txt","Africa_currency.txt","Australia.txt","North_america_currency.txt","South_america_currency.txt"};//location of other currenices
-    char *currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
+    const char* file_s_for_currency[]= {"Asia_currency.txt","Europe_currency.txt","Africa_currency.txt","Australia.txt","North_america_currency.txt","South_america_currency.txt"};
+    char* currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
                             "THB","TRY", "RUB", "IDR", "PKR","MYR","SGD","ILS","IRR",
                             "VND","JPY","PHP","KZT","LKR","AED","EUR", "GBP", "CHF", "SEK", "NOK",
                             "DKK", "HUF", "PLN", "CZK", "BGN",
@@ -43,7 +45,11 @@ int main()
                          0.22,0.08,0.0091,1.41,0.0091,0.22,0.52,0.062,0.0091,0.33,3.19,0.045,8.04,36.12,0.034,0.303,0.063,66.33,0.35,1.91,0.35,
                          228.94,0.0072,0.016,0.018
                         };//currency rates
-    float any_to_bdt[200];
+    float any_to_bdt[95];
+    for(int i=0; i<95; i++)
+    {
+        any_to_bdt[i]=1/bdt_to_any[i];
+    }
 
     //welcome heading
     printf("\033[0;36m");
@@ -73,8 +79,8 @@ int main()
     {
 
         srand(time(NULL));
-        char name1[3];
-        char name2[3];
+        char name1[4];
+        char name2[4];
         int num_currencies = 95;
 
         //time.h - random currency generator
@@ -110,7 +116,7 @@ int main()
             else if(i==94)
             {
                 printf("\033[0;31m\n\tCURRENCY NOT FOUND!\n\033[0m");
-                exit_menu();
+                error_handling();
             }
         }
         if(found1)
@@ -211,10 +217,15 @@ int main()
         {
             error_handling();
         }
-        else if(to>15 || to<1 && continent_to>1)
+        else if((to>15 || to<1) && (continent_to>1))
         {
             error_handling();
         }
+
+        printf("\033[1;32m");
+        printf("\n\n %c Please Enter The Amount To CONVERT -> ",175);
+        printf("\033[0m");
+        scanf("%f",&amount);
 
         switch (continent_from)
         {
@@ -267,11 +278,11 @@ int main()
     }
     else if(ch==3)
     {
-        printf("\033[0;36m||ALL CURRENCY LIST||\n\n\033[0m");
+        printf("\033[0;36m ||ALL CURRENCY LIST||\n\n\033[0m");
         FILE* files = fopen(fileadrs_for_all_currency,"r");
         if(files==NULL)
         {
-            printf("Failed to open FILE\n");
+            printf("\033[0;31m\n\tFailed to open FILE!\n\033[0m");
             error_handling();
         }
         else
@@ -279,24 +290,64 @@ int main()
             char buffer[1024];
             while(fgets(buffer,sizeof(buffer),files)!=NULL)
             {
-                printf("%s",buffer);
+
+                printf("\033[1;36m%s\033[0m",buffer);
             }
         }
         fclose(files);
-        printf("\n\nPress enter to continue....");
+        printf("\033[0;36m\n\n %c Press enter to continue...\033[0m",254);
         getchar();
         exit_menu();
+    }
+    else if(ch==4)
+    {
+        FILE* history=fopen("history.txt","r");
+        if(history==NULL)
+        {
+            printf("Failed to Open FILE\n");
+            error_handling();
+        }
+        else
+        {
+            char hi_buffer[1024];
+            while(fgets(hi_buffer,sizeof(hi_buffer),history)!=NULL)
+            {
+                printf("%s",hi_buffer);
+            }
+            printf("\n");
+        }
+        fclose(history);
+        printf("Press [1] to clear history [2]Continue\n-->>>");
+        int ch2;
+        scanf("%d",&ch2);
+        if(ch2==1)
+        {
+            FILE* history=fopen("history.txt","w");
+            if(history==NULL)
+            {
+                printf("Could not access memory\n");
+                error_handling();
+            }
+            else
+            {
+                printf("Memory cleared\n");
+                exit_menu();
+            }
+        }
+        else if(ch2==2)
+        {
+            exit_menu();
+        }
+        else
+        {
+            error_handling();
+        }
     }
     else
     {
         error_handling();
     }
 
-    }
-    else
-    {
-        error_handling();
-    }
     return 0;
 
 
@@ -337,44 +388,8 @@ void currency_name_of_continent(int choice,const char* file_s_for_currency[])
 }
 void error_handling()
 {
-    int c;
-    while((c=getchar())!='\n'&&c!=EOF);
-    printf("\033[1;31m\n\tSomething is Wrong!!\n\033[0m");
-    printf("\033[0;44m");
-    char close;
-    printf("\n\n %c Enter   (+) for More Conversion   (?) for About us   (X) for Exit... -> ",254);
-    printf("\033[0m");
-    scanf(" %c",&close);
-    if (close == 'x'||close == 'X')
-    {
-        printf("\033[1;31m\nThank You <3\n\033[0m");
-        exit(0);
-    }
-    else if (close == '?')
-    {
-        system("cls");
-        printf("\033[1;31m");
-        printf("\n %c About Us %c\n",175,174);
-        printf(" ------------\n");
-        printf(" A Project by \"CODE MINERS\"!\n");
-        printf(" Daffodil International University\n\n");
-        printf(" 1. Shishir Karmokar - 254\n");
-        printf(" 2. Gulam Murshed - 336\n");
-        printf(" 3. Anamika Akter - 101\n");
-        printf(" 4. Bijoy Krishna Sarker - 219\n\n");
-        printf("\033[0m");
-        exit_menu();
-    }
-    else if (close == '+')
-    {
-        main();
-    }
-    else
-    {
-        error_handling();
-
-    }
-    printf("\033[0m");
+    printf("\033[0;31m\n\tSomething is Wrong!!\n\033[0m");
+    exit_menu(); //function to function call
 
 }
 void exit_menu()
@@ -388,7 +403,7 @@ void exit_menu()
     scanf(" %c",&close);
     if (close == 'x'||close == 'X')
     {
-        printf("\033[1;31m\nThank You <3\n\033[0m");
+        printf("\033[1;31m\n Thank You <3\n\033[0m");
         exit(0);
     }
     else if (close == '?')
@@ -397,12 +412,16 @@ void exit_menu()
         printf("\033[1;31m");
         printf("\n %c About Us %c\n",175,174);
         printf(" ------------\n");
-        printf(" A Project by \"CODE MINERS\"!\n");
-        printf(" Daffodil International University\n\n");
-        printf(" 1. Shishir Karmokar - 254\n");
-        printf(" 2. Gulam Murshed - 336\n");
-        printf(" 3. Anamika Akter - 101\n");
-        printf(" 4. Bijoy Krishna Sarker - 219\n\n");
+        printf(" \n\n <> DAFFODIL INTERNATIONAL UNIVERSITY:\n");
+        printf(" -------------------------------------\n\n");
+        printf(" <> PROJECT NAME: [ CURRENCY CONVERTER ]\n\n");
+        printf(" <> GROUP NAME: [ The Code Miners ]\n\n");
+        printf(" <> GROUP MEMBERS:\n\n");
+        printf(" 1. SHISHIR KARMOKAR	ID - 0242320005101254\n");
+        printf(" 2. GULAM MURSHED 	ID - 0242320005101336\n");
+        printf(" 3. ANAMIKA AKTER	ID - 0242320005101101\n");
+        printf(" 4. BIJOY SARKER	ID - 0242320005101219\n\n");
+        printf("    [ A Project by \"CODE MINERS\" ]\n");
         printf("\033[0m");
         exit_menu();
     }
@@ -418,7 +437,6 @@ void exit_menu()
     printf("\033[0m");
 
 }
-//Currency Conversion Function
 void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
 {
     FILE* file=fopen("history.txt","a");
@@ -471,4 +489,3 @@ void currencyconversion(int from,int to,float value,char* currency_name[],float 
     
     
 }
-
