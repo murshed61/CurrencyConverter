@@ -4,53 +4,36 @@
 #include<stdbool.h>
 #include<ctype.h>
 #include <time.h>
-
+//Structure Declaration
+typedef struct records
+{
+    char currency_name[5];
+    float value;
+    float value2;
+}data;
 //Function Declaration
-void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[]);
+void currencyconversion(int from,int to,float value,data record[]);
 void continents();
 void currency_name_of_continent(int choice,const char* file_s_for_currency[]);
 void error_handling();
 void exit_menu();
-
-
+void read_data_from_files(data input[]);
+void pause();
+void adminpanel();
+void read_from_file();
+void edit_data();
+void restore_data();
+void access_admin();
 
 //MAIN Function - code start from here >
 int main()
 {
     system("cls");
-    const char* history = "history.txt";
+    data record[95];
     const char* fileadrs_for_all_currency = "Currency_List.txt";//Specify exact file location here
     const char* file_s_for_currency[]= {"Asia_currency.txt","Europe_currency.txt","Africa_currency.txt","Australia.txt","North_america_currency.txt","South_america_currency.txt"};
-    char* currency_name[]= {"BDT", "CNY", "INR", "KRW", "SAR",
-                            "THB","TRY", "RUB", "IDR", "PKR","MYR","SGD","ILS","IRR",
-                            "VND","JPY","PHP","KZT","LKR","AED","EUR", "GBP", "CHF", "SEK", "NOK",
-                            "DKK", "HUF", "PLN", "CZK", "BGN",
-                            "HRK", "RON", "UAH", "ISK","RSD",
-                            "DZD", "EGP", "ZAR",
-                            "NGN", "KES", "MAD", "ETB", "GHS", "TZS", "UGX", "RWF", "BWP", "ZMW", "TND", "ZWL",
-                            "AUD", "NZD", "FJD", "PGK", "WST",
-                            "TOP", "SBD", "VUV", "XPF", "NAD",
-                            "CKD", "TVD", "VUV", "KID", "PWG",
-                            "USD", "CAD", "MXN", "GTQ", "CRC",
-                            "HNL", "SVC", "PAB", "JMD", "BSD",
-                            "CUP", "DOP", "TTD", "BMD", "NIO",
-                            "ARS", "BRL", "CLP", "COP", "PEN",
-                            "VES", "BOB", "PYG", "UYU", "GYD",
-                            "SRD", "ECS", "FKP", "AWG", "BZD"
-                           };//currency names
-    float bdt_to_any[]= {1,0.066,0.76,12.08,0.034,0.33,0.25,0.88,139.82,2.69,0.043,0.012,0.035,384.99,
-                         220.18,1.34,0.52,4.25,2.95,0.033,0.0085,0.0073,0.0081,0.10,0.098,0.063,3.25,0.039,0.21,0.017,0.063,0.042,0.34,1.22,1,
-                         1.25,0.28,0.17,6.79,1.34,0.093,0.50,0.10,22.84,33.93,10.98,0.12,0.19,0.029,3.29,
-                         0.014,0.015,0.021,0.033,0.025,0.022,0.077,1.1152,1.02,0.17,0.007,0.014,1.115,15.79,0.0091,0.0091,0.012,0.16,0.072,4.87,
-                         0.22,0.08,0.0091,1.41,0.0091,0.22,0.52,0.062,0.0091,0.33,3.19,0.045,8.04,36.12,0.034,0.303,0.063,66.33,0.35,1.91,0.35,
-                         228.94,0.0072,0.016,0.018
-                        };//currency rates
-    float any_to_bdt[95];
-    for(int i=0; i<95; i++)
-    {
-        any_to_bdt[i]=1/bdt_to_any[i];
-    }
 
+    read_data_from_files(record);
     //welcome heading
     printf("\033[0;36m");
     printf("\t\t\t\t\t\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////\n");
@@ -70,6 +53,7 @@ int main()
     printf("\t\t\t\t\t\t* [2] MANUAL CONVERSION *\n");
     printf("\t\t\t\t\t\t* [3] CURRENCY LIST     *\n");
     printf("\t\t\t\t\t\t* [4] Show History      *\n");
+    printf("\t\t\t\t\t\t* [5] Admin Panel       *\n");
     printf("\t\t\t\t\t\t*************************\n");
     printf("\t\t\t\t\t\t%c Enter Choice -> ",254);
     printf("\033[0m");// Reset text color to default
@@ -90,7 +74,7 @@ int main()
         for (int i = 0; i < 10; i++)
         {
             int random_index = rand() % num_currencies;
-            printf(" %s |",currency_name[random_index]);
+            printf(" %s |",record[random_index].currency_name);
         }
         printf("\n\t----------------------------------------------------------------------------------------------\n");
         printf("\033[0m");
@@ -107,7 +91,7 @@ int main()
         bool found1 = false;
         for(int i = 0; i<95; i++)
         {
-            if(strcmp(currency_name[i],name1)==0)
+            if(strcmp(record[i].currency_name,name1)==0)
             {
                 found1 = true;
                 from = i+1;
@@ -123,7 +107,7 @@ int main()
         {
             printf("\033[0;32m");
             printf("\t------------------------------\n");
-            printf("\tSELECTED CURRENCY IS || %s ||\n",currency_name[from-1]);
+            printf("\tSELECTED CURRENCY IS || %s ||\n",record[from-1].currency_name);
             printf("\t------------------------------\n");
             printf("\033[0m");
         }
@@ -136,7 +120,7 @@ int main()
         bool found2 = false;
         for(int i = 0; i<95; i++)
         {
-            if(strcmp(currency_name[i],name2)==0)
+            if(strcmp(record[i].currency_name,name2)==0)
             {
                 found2 = true;
                 to = i+1;
@@ -152,14 +136,14 @@ int main()
         {
             printf("\033[0;32m");
             printf("\t------------------------------\n");
-            printf("\tSELECTED CURRENCY IS || %s ||\n",currency_name[to-1]);
+            printf("\tSELECTED CURRENCY IS || %s ||\n",record[to-1].currency_name);
             printf("\t------------------------------\n");
             printf("\033[0m");
         }
         printf("\n\t%c Enter amount -> ",254);
         scanf("%f",&amount);
 
-        currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
+        currencyconversion(from,to,amount,record);
         exit_menu();
     }
 
@@ -273,7 +257,7 @@ int main()
         {
             error_handling();
         }
-        currencyconversion(from,to,amount,currency_name,bdt_to_any,any_to_bdt);
+        currencyconversion(from,to,amount,record);
         exit_menu();
     }
     else if(ch==3)
@@ -342,6 +326,10 @@ int main()
         {
             error_handling();
         }
+    }
+    else if(ch==5)
+    {
+        access_admin();
     }
     else
     {
@@ -437,55 +425,354 @@ void exit_menu()
     printf("\033[0m");
 
 }
-void currencyconversion(int from,int to,float value,char* currency_name[],float bdt_to_any[],float any_to_bdt[])
+void currencyconversion(int from,int to,float value,data record[])
 {
     FILE* file=fopen("history.txt","a");
     if(file==NULL)
     {
         printf("Memory could not be accessed\n");
     }
-    for(int i=0; i<95; i++)
-    {
-        any_to_bdt[i]=1/bdt_to_any[i];
-    }
 
     printf("\033[1;31m");
     if(from==to)//same currency
     {
         printf("\n\n\t<=--------------------------------------------=>\n");
-        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],value,currency_name[to-1]);
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,record[from-1].currency_name,record[to-1].currency_name,value,record[to-1].currency_name);
         printf("\t<=--------------------------------------------=>\n");
-        fprintf(file,"\n%.2f %s TO %s = %.2f %s",value,currency_name[from-1],currency_name[to-1],value,currency_name[to-1]);
+        fprintf(file,"\n%.2f %s TO %s = %.2f %s",value,record[from-1].currency_name,record[to-1].currency_name,value,record[to-1].currency_name);
     }
     else if(from==1)//bdt_to_any
     {
-        float calculated_any_value=bdt_to_any[to-1]*value;
+        float calculated_any_value=record[to-1].value*value;
         printf("\n\n\t<=--------------------------------------------=>\n");
-        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any_value,currency_name[to-1]);
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,record[from-1].currency_name,record[to-1].currency_name,calculated_any_value,record[to-1].currency_name);
         printf("\t<=--------------------------------------------=>\n");
-        fprintf(file,"\n%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any_value,currency_name[to-1]);
+        fprintf(file,"\n%.2f %s TO %s = %.2f %s\n",value,record[from-1].currency_name,record[to-1].currency_name,calculated_any_value,record[to-1].currency_name);
     }
     else if(to==1)//any_to_bdt
     {
-        float calculated_bdt_value = any_to_bdt[from-1]*value;
+        float calculated_bdt_value = record[from-1].value2*value;
         printf("\n\n\t<=--------------------------------------------=>\n");
-        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_bdt_value,currency_name[to-1]);
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,record[from-1].currency_name,record[to-1].currency_name,calculated_bdt_value,record[to-1].currency_name);
         printf("\t<=--------------------------------------------=>\n");
-        fprintf(file,"\n%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_bdt_value,currency_name[to-1]);
+        fprintf(file,"\n%.2f %s TO %s = %.2f %s\n",value,record[from-1].currency_name,record[to-1].currency_name,calculated_bdt_value,record[to-1].currency_name);
     }
     else if(from!=to)//ANY TO ANY
     {
-        float anyToBdt = any_to_bdt[from-1]*value;
-        float calculated_any = bdt_to_any[to-1]*anyToBdt;
+        float anyToBdt = record[from-1].value2*value;
+        float calculated_any = record[to-1].value*anyToBdt;
 
         printf("\n\n\t<=--------------------------------------------=>\n");
-        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any,currency_name[to-1]);
+        printf("\t\t%.2f %s TO %s = %.2f %s\n",value,record[from-1].currency_name,record[to-1].currency_name,calculated_any,record[to-1].currency_name);
         printf("\t<=--------------------------------------------=>\n");
-        fprintf(file,"\n%.2f %s TO %s = %.2f %s\n",value,currency_name[from-1],currency_name[to-1],calculated_any,currency_name[to-1]);
+        fprintf(file,"\n%.2f %s TO %s = %.2f %s\n",value,record[from-1].currency_name,record[to-1].currency_name,calculated_any,record[to-1].currency_name);
     }
     printf("\033[0m");
     fclose(file);
+
     
     
     
+}
+void read_data_from_files(data input[])
+{
+     FILE* names=fopen("cur_name_list.txt","r");
+     if(names==NULL)
+     {
+        perror("Error Opening File");
+        pause();
+        error_handling();
+       
+     }
+     else
+     {
+        char buffer[5];
+        for(int i = 0;i<95;i++)
+        {
+            fscanf(names, "%[^,],", buffer);
+            strcpy(input[i].currency_name,buffer);
+        }
+        fclose(names);
+     }
+     FILE* names2=fopen("bdt_to_any.txt","r");
+     if(names2==NULL)
+     {
+        perror("Error Opening File");
+        pause();
+        error_handling();
+       
+     }
+     else
+     {
+        float amount;
+        for(int i = 0;i<95;i++)
+        {
+            fscanf(names2, "%f,",&amount);
+            input[i].value=amount;
+        }
+        fclose(names2);
+     }
+    for(int i=0; i<95; i++)
+    {
+        input[i].value2=1/input[i].value;
+    }
+}
+void pause()
+{
+    int c;
+    printf("\nPress Enter to continue\n");
+    while ((c = getchar()) != '\n' && c != EOF);
+    getchar();
+}
+void access_admin()
+{
+    system("cls");
+    char *user[] = {"Morshed", "Shishir", "Anamika", "Bijoy"};
+    char password[] = "Azxcvbnm1";
+    char username[20];
+    char pass[20];
+    printf("+--------------------------+\n");
+    printf("| Enter Username:          |\n");
+    printf("+--------------------------+\n");
+    printf("-->>");
+    scanf("%s", username);
+    int found = 0;
+    int choice = 5;
+    for (int i = 0; i < 4; i++)
+    {
+        if (strcmp(user[i], username) == 0)
+        {
+            found = 1;
+            choice = i + 1;
+            break;
+        }
+    }
+    if (found)
+    {
+        printf("+-----------------------------------------+\n");
+        printf("| Hey %s, Enter Your Admin Password:      |\n", user[choice - 1]);
+        printf("+-----------------------------------------+\n");
+        printf("-->>");
+        scanf("%s", pass);
+        if (strcmp(pass, password) == 0)
+        {
+            printf("\nValid Password\n");
+            pause();
+            adminpanel();
+        }
+        else
+        {
+            printf("\nWrong password\n");
+            pause();
+            access_admin();
+        }
+    }
+    else
+    {
+        printf("Sorry User Not Found\n");
+        pause();
+        main();
+    }
+}
+void adminpanel()
+{
+    system("cls");
+    printf("*******************************\n");
+    printf("*    WELCOME TO ADMIN PANEL    *\n");
+    printf("*******************************\n\n");
+
+    printf("  1. Read Data\n");
+    printf("  2. Edit Data\n");
+    printf("  3. Restore Default Values\n");
+    printf("  4. Exit From Admin Panel\n");
+    printf("  5. Exit From program\n");
+    printf("-->>");
+    int ch;
+    scanf("%d", &ch);
+    if (ch == 1)
+    {
+        read_from_file();
+    }
+    else if (ch == 2)
+    {
+        edit_data();
+    }
+    else if (ch == 3)
+    {
+        restore_data();
+    }
+    else if(ch == 4)
+    {
+        main();
+    }
+    else if(ch == 5)
+    {
+        printf("\nThank you<3\n");
+        exit(0);
+    }
+    else
+    {
+        printf("Invalid Input\n");
+    }
+    pause();
+    adminpanel();
+}
+void read_from_file()
+{
+    FILE *read = fopen("cur_name_list.txt", "r");
+    if (read == NULL)
+    {
+        perror("Error opening cur_name_list.txt");
+        pause();
+        adminpanel();
+    }
+    else
+    {
+        FILE *read2 = fopen("bdt_to_any.txt", "r");
+        if (read2 == NULL)
+        {
+            perror("Error opening bdt_to_any.txt");
+            pause();
+            adminpanel();
+        }
+
+        else
+        {
+            char buffer[10];
+            float number;
+            while (fscanf(read, "%[^,],", buffer) == 1)
+            {
+                if (fscanf(read2, "%f,", &number) == 1)
+                {
+                    printf("+------------------------+\n");
+                    printf("| 1 %s = %.3f BDT |\n", buffer, number);
+                    printf("+------------------------+\n");
+                }
+                else
+                {
+                    printf("File ended or error\n");
+                    pause();
+                    adminpanel();
+                }
+            }
+        }
+        fclose(read);
+        fclose(read2);
+    }
+    pause();
+    adminpanel();
+}
+void edit_data()
+{
+    printf("+----------------------------------------------------+\n");
+    printf("| Enter Currency Name to Edit Value (in respect to BDT) |\n");
+    printf("+----------------------------------------------------+\n");
+    printf("-->>");
+    char name[4];
+    long int position = -1;
+    scanf("%s", name);
+    for (int i = 0; i < 3; i++)
+    {
+        name[i] = toupper(name[i]);
+    }
+    FILE *read = fopen("cur_name_list.txt", "r");
+    if (read == NULL)
+    {
+        perror("Error opening cur_name_list.txt");
+        pause();
+        adminpanel();
+    }
+    else
+    {
+        FILE *read2 = fopen("bdt_to_any.txt", "r+");
+        if (read2 == NULL)
+        {
+            perror("Error opening bdt_to_any.txt");
+            pause();
+            adminpanel();
+        }
+
+        else
+        {
+            char buffer[10];
+            float number;
+            int found = 0;
+            while (fscanf(read, "%[^,],", buffer) == 1)
+            {
+                if (fscanf(read2, "%f,", &number) == 1)
+                {
+                    if (strcmp(buffer, name) == 0)
+                    {
+                        printf("+--------------------------+\n");
+                        printf("| Selected Currency to Edit |\n");
+                        printf("| 1 BDT = %.3f %s         |\n", number, buffer);
+                        printf("+--------------------------+\n");
+
+                        found = 1;
+                        break;
+                    }
+                    position = ftell(read2);
+                }
+            }
+            if (found)
+            {
+                printf("Enter new value:\n-->> ");
+
+                float value;
+                scanf("%f", &value);
+                fseek(read2, position, SEEK_SET);
+                fprintf(read2, "%.3f", value);
+                printf("+------------------------+\n");
+                printf("|        SUCCEED         |\n");
+                printf("| 1 BDT = %.3f %s     |\n", value, buffer);
+                printf("+------------------------+\n");
+            }
+            else
+            {
+                printf("Not Found!\n");
+                pause();
+                adminpanel();
+            }
+        }
+        fclose(read);
+        fclose(read2);
+    }
+    pause();
+    adminpanel();
+}
+void restore_data()
+{
+    FILE *read = fopen("Backup.txt", "r");
+    if (read == NULL)
+    {
+        perror("Error opening file:");
+        pause();
+        adminpanel();
+    }
+    else
+    {
+        FILE *write = fopen("bdt_to_any.txt", "w");
+        if (write == NULL)
+        {
+            perror("Error Opening File:");
+            pause();
+            adminpanel();
+        }
+        else
+        {
+            char buffer[100];
+            while (fgets(buffer, sizeof(buffer), read) != NULL)
+            {
+                fprintf(write, "%s", buffer);
+            }
+            printf("+----------------------------+\n");
+            printf("| Successfully Restored to Default |\n");
+            printf("+----------------------------+\n");
+        }
+
+        fclose(write);
+    }
+    fclose(read);
+    pause();
+    adminpanel();
 }
