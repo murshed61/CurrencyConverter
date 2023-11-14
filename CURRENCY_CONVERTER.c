@@ -296,7 +296,7 @@ void simplified_version()
     case 3:
         show_list(0);
         break;
-        case 4:
+    case 4:
         login_page();
         break;
     default:
@@ -1012,7 +1012,7 @@ void read_from_file()
                 if (fscanf(read2, "%f,", &number) == 1)
                 {
                     printf("+------------------------+\n");
-                    printf("| 1 %s = %.3f BDT |\n", buffer, number);
+                    printf("| 1 BDT = %.3f  %s|\n",number,buffer);
                     printf("+------------------------+\n");
                 }
                 else
@@ -1086,25 +1086,35 @@ void edit_data()
                 printf("Enter new value:\n-->> ");
 
                 float value;
+                int ch = 0;
                 scanf("%f", &value);
                 fseek(read2, position, SEEK_SET);
                 if (value < 10)
                 {
                     fprintf(read2, "%.3f", value);
+                    ch++;
                 }
                 else if (value > 10 && value < 100)
                 {
                     fprintf(read2, "%.2f", value);
+                    ch++;
                 }
                 else
                 {
-                    fprintf(read2, "%.f", value);
+                    printf("CAN'T EDIT VALUE GREATER THEN 99\n");
                 }
-                printf("+------------------------+\n");
-                printf("|        SUCCEED         |\n");
-                printf("| 1 BDT = %.3f %s     |\n", value, buffer);
-                printf("+------------------------+\n");
-                input_clear();
+                if (ch)
+                {
+                    printf("+------------------------+\n");
+                    printf("|        SUCCEED         |\n");
+                    printf("| 1 BDT = %.3f %s     |\n", value, buffer);
+                    printf("+------------------------+\n");
+                    input_clear();
+                }
+                else
+                {
+                    input_clear();
+                }
             }
             else
             {
@@ -1116,6 +1126,7 @@ void edit_data()
         fclose(read);
         fclose(read2);
     }
+    
     pause();
     settings();
 }
