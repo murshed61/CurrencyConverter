@@ -41,8 +41,8 @@ int main()
 {
     system("cls");
     data record[95];
-    const char *fileadrs_for_all_currency = "Currency_List.txt"; // Specify exact file location here
-    const char *file_s_for_currency[] = {"Asia_currency.txt", "Europe_currency.txt", "Africa_currency.txt", "Australia.txt", "North_america_currency.txt", "South_america_currency.txt"};
+    const char *fileadrs_for_all_currency = "files/Currency_List.txt"; // Specify exact file location here
+    const char *file_s_for_currency[] = {"files/Asia_currency.txt", "files/Europe_currency.txt", "files/Africa_currency.txt", "files/Australia.txt", "files/North_america_currency.txt", "files/South_america_currency.txt"};
 
     read_data_from_files(record);
     // welcome heading
@@ -292,7 +292,7 @@ int main()
     }
     else if (ch == 4)
     {
-        FILE *history = fopen("history.txt", "r");
+        FILE *history = fopen("files/history.txt", "r");
         if (history == NULL)
         {
             printf("Failed to Open FILE\n");
@@ -313,7 +313,7 @@ int main()
         scanf("%d", &ch2);
         if (ch2 == 1)
         {
-            FILE *history = fopen("history.txt", "w");
+            FILE *history = fopen("files/history.txt", "w");
             if (history == NULL)
             {
                 printf("Could not access memory\n");
@@ -429,7 +429,7 @@ void exit_menu()
 }
 void currencyconversion(int from, int to, float value, data record[])
 {
-    FILE *file = fopen("history.txt", "a");
+    FILE *file = fopen("files/history.txt", "a");
     if (file == NULL)
     {
         printf("Memory could not be accessed\n");
@@ -474,10 +474,10 @@ void currencyconversion(int from, int to, float value, data record[])
 }
 void read_data_from_files(data input[])
 {
-    FILE *names = fopen("cur_name_list.txt", "r");
+    FILE *names = fopen("files/cur_name_list.txt", "r");
     if (names == NULL)
     {
-        perror("Error Opening File");
+        perror("Error Opening File For Names");
         pause();
         error_handling();
     }
@@ -491,10 +491,10 @@ void read_data_from_files(data input[])
         }
         fclose(names);
     }
-    FILE *names2 = fopen("bdt_to_any.txt", "r");
+    FILE *names2 = fopen("files/bdt_to_any.txt", "r");
     if (names2 == NULL)
     {
-        perror("Error Opening File");
+        perror("Error Opening File For currency");
         pause();
         error_handling();
     }
@@ -595,7 +595,7 @@ void adminpanel(char name[])
 }
 void read_from_file(char name[])
 {
-    FILE *read = fopen("cur_name_list.txt", "r");
+    FILE *read = fopen("files/cur_name_list.txt", "r");
     if (read == NULL)
     {
         perror("Error opening cur_name_list.txt");
@@ -604,7 +604,7 @@ void read_from_file(char name[])
     }
     else
     {
-        FILE *read2 = fopen("bdt_to_any.txt", "r");
+        FILE *read2 = fopen("files/bdt_to_any.txt", "r");
         if (read2 == NULL)
         {
             perror("Error opening bdt_to_any.txt");
@@ -651,7 +651,7 @@ void edit_data(char name[])
     {
         name2[i] = toupper(name2[i]);
     }
-    FILE *read = fopen("cur_name_list.txt", "r");
+    FILE *read = fopen("files/cur_name_list.txt", "r");
     if (read == NULL)
     {
         perror("Error opening cur_name_list.txt");
@@ -660,7 +660,7 @@ void edit_data(char name[])
     }
     else
     {
-        FILE *read2 = fopen("bdt_to_any.txt", "r+");
+        FILE *read2 = fopen("files/bdt_to_any.txt", "r+");
         if (read2 == NULL)
         {
             perror("Error opening bdt_to_any.txt");
@@ -729,7 +729,7 @@ void edit_data(char name[])
 }
 void restore_data(char name[])
 {
-    FILE *read = fopen("Backup.txt", "r");
+    FILE *read = fopen("files/Backup.txt", "r");
     if (read == NULL)
     {
         perror("Error opening file:");
@@ -738,7 +738,7 @@ void restore_data(char name[])
     }
     else
     {
-        FILE *write = fopen("bdt_to_any.txt", "w");
+        FILE *write = fopen("files/bdt_to_any.txt", "w");
         if (write == NULL)
         {
             perror("Error Opening File:");
@@ -767,12 +767,14 @@ void sign_up()
 {
     char user[20];
     char pass[20];
-    printf("Enter your username\n");
+    printf("******************************\n");
+    printf("Please enter your username: ");
+    printf("******************************\n");
     printf("-->>");
     scanf("%s", user);
-    FILE *userpointer = fopen("username_list.txt", "a");
-    FILE *userFav = fopen("user.txt", "a");
-    FILE *Fav = fopen("Favourites.txt", "a");
+    FILE *userpointer = fopen("files/username_list.txt", "a");
+    FILE *userFav = fopen("files/user.txt", "a");
+    FILE *Fav = fopen("files/Favourites.txt", "a");
     if (userpointer == NULL || userFav == NULL || Fav == NULL)
     {
         perror("Server Error\n");
@@ -791,7 +793,7 @@ void sign_up()
     printf("Enter your password\n");
     printf("-->>");
     scanf("%s", pass);
-    FILE *passpointer = fopen("password_list.txt", "a");
+    FILE *passpointer = fopen("files/password_list.txt", "a");
     if (passpointer == NULL)
     {
         perror("Server Error\n");
@@ -819,7 +821,7 @@ void sign_in()
     printf("-->>");
     fflush(stdin);
     scanf("%s", user);
-    FILE *userpointer = fopen("username_list.txt", "r");
+    FILE *userpointer = fopen("files/username_list.txt", "r");
     if (userpointer == NULL)
     {
         perror("Server Error\n");
@@ -844,7 +846,7 @@ void sign_in()
             printf("Hello %s Enter your Password\n", user);
             printf("-->>");
             scanf("%s", pass);
-            FILE *passpointer = fopen("password_list.txt", "r");
+            FILE *passpointer = fopen("files/password_list.txt", "r");
             if (passpointer == NULL)
             {
                 perror("Server Error\n");
@@ -913,8 +915,8 @@ void favourites(char name[])
 }
 void read_favourites(char name[])
 {
-    FILE *read = fopen("Favourites.txt", "r+");
-    FILE *user = fopen("user.txt", "r");
+    FILE *read = fopen("files/Favourites.txt", "r+");
+    FILE *user = fopen("files/user.txt", "r");
     if (read == NULL || user == NULL)
     {
         perror("Failed to open files\n");
@@ -955,8 +957,8 @@ void edit_favourites(char name[])
     {
 
         int found = 0;
-        FILE *read = fopen("Favourites.txt", "r+");
-        FILE *user = fopen("user.txt", "r+");
+        FILE *read = fopen("files/Favourites.txt", "r+");
+        FILE *user = fopen("files/user.txt", "r+");
         long long int pointer = ftell(read);
         if (read == NULL || user == NULL)
         {
@@ -1014,8 +1016,8 @@ void edit_favourites(char name[])
         }
 
         int found2 = 0;
-        FILE *read = fopen("Favourites.txt", "r+");
-        FILE *user = fopen("user.txt", "r+");
+        FILE *read = fopen("files/Favourites.txt", "r+");
+        FILE *user = fopen("files/user.txt", "r+");
         long long int pointer2 = ftell(read);
         if (read == NULL || user == NULL)
         {
@@ -1066,8 +1068,8 @@ void disassemble(char buffer[])
 void erase(char name[])
 {
     int found = 0;
-    FILE *read = fopen("Favourites.txt", "r+");
-    FILE *user = fopen("user.txt", "r+");
+    FILE *read = fopen("files/Favourites.txt", "r+");
+    FILE *user = fopen("files/user.txt", "r+");
     long long int pointer = ftell(read);
     if (read == NULL || user == NULL)
     {
