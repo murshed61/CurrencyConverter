@@ -46,6 +46,10 @@ void edit_favourites();
 void disassemble(char buffer[]);
 int check_entry(char input[]);
 int check_index(char input[]);
+void change_password();
+int check_password();
+void discard_username_password();
+void allocate_new_username(char pass[]);
 
 // Program Starts From Here
 int main()
@@ -874,8 +878,9 @@ void settings()
     printf("  1. Read Data\n");
     printf("  2. Edit Data\n");
     printf("  3. Restore Default Values\n");
-    printf("  4. Exit From Admin Panel\n");
-    printf("  5. Exit From program\n");
+    printf("  4. Change Password\n");
+    printf("  5. Exit From Admin Panel\n");
+    printf("  6. Exit From program\n");
     printf("-->>");
     int ch;
     scanf("%d", &ch);
@@ -894,9 +899,13 @@ void settings()
     }
     else if (ch == 4)
     {
-        main_menu();
+        change_password();
     }
     else if (ch == 5)
+    {
+        main_menu();
+    }
+    else if (ch == 6)
     {
         printf("\nThank you<3\n");
         exit(0);
@@ -1012,7 +1021,7 @@ void read_from_file()
                 if (fscanf(read2, "%f,", &number) == 1)
                 {
                     printf("+------------------------+\n");
-                    printf("| 1 BDT = %.3f  %s|\n",number,buffer);
+                    printf("| 1 BDT = %.3f  %s|\n", number, buffer);
                     printf("+------------------------+\n");
                 }
                 else
@@ -1126,7 +1135,7 @@ void edit_data()
         fclose(read);
         fclose(read2);
     }
-    
+
     pause();
     settings();
 }
@@ -1250,13 +1259,20 @@ void edit_favourites()
     else if (ch == 2)
     {
         input_clear();
+        int count = 0;
+        int cur_count = count_currency();
+        cur_count = cur_count - 1;
         printf("\n=============================================\n");
-        printf("Add Favorite Characters (up to 5 | Enter 0 to stop)\n");
+        printf("Add Favorite Characters (Already Added %d ,Now you can add %d Currency | Enter 0 to stop)\n", cur_count, 5 - cur_count);
         printf("\n=============================================\n");
         printf("-->>\n");
-
-        int count = 0;
-        for (int i = 0; i < 5; i++)
+        if (cur_count == 5)
+        {
+            printf("MAXIMUM AMOUNT REACHED\n");
+            pause();
+            favourites();
+        }
+        for (int i = 0; i < 5 - cur_count; i++)
         {
             char temp[6];
             scanf("%s", temp);
@@ -1265,11 +1281,12 @@ void edit_favourites()
             {
                 temp[j] = toupper(temp[j]);
             }
-            int found = check_entry(temp);
-            if (strcmp(struct_data[i].fav_currency, "0") == 0)
+
+            if (strcmp(temp, "0") == 0)
             {
                 break;
             }
+            int found = check_entry(temp);
             if (found == 1)
             {
                 strcpy(struct_data[i].fav_currency, temp);
@@ -1307,12 +1324,15 @@ void edit_favourites()
             }
             if (found2)
             {
+                pointer2 = pointer2 + cur_count * 4;
                 fseek(read, pointer2, SEEK_SET);
                 for (int i = 0; i < count; i++)
                 {
                     fprintf(read, "%s+", struct_data[i].fav_currency);
                 }
                 printf("Succesfully Added\n");
+                input_clear();
+                pause();
             }
         }
         fclose(read);
@@ -1366,4 +1386,181 @@ int check_index(char input[])
         }
     }
     return found;
+}
+int count_currency()
+{
+    char buffer[50];
+    char buffer2[1000];
+    FILE *read = fopen("files/Favourites.txt", "r+");
+    FILE *user = fopen("files/user.txt", "r+");
+    long long int pointer2 = ftell(read);
+    int found2 = 0;
+    if (read == NULL || user == NULL)
+    {
+        perror("Failed to open files\n");
+    }
+    else
+    {
+        while (fscanf(user, "%[^,],", buffer) == 1)
+        {
+            if (fscanf(read, "%[^,],", buffer2) == 1)
+            {
+                if (strcmp(buffer, sign_in_user_name) == 0)
+                {
+                    break;
+                }
+            }
+            pointer2 = ftell(read);
+        }
+    }
+
+    const char *limiter = "+";
+    char *token = strtok(buffer2, limiter);
+    int count = 0;
+    while (token != NULL)
+    {
+        count++;
+        token = strtok(NULL, limiter);
+    }
+    return count;
+}
+void change_password()
+{
+    int found = check_password();
+    if (found)
+    {
+        printf("Enter New Password:\n");
+        char pass[20];
+        scanf("%s", pass);
+        discard_username_password();
+        allocate_new_username(pass);
+    }
+    else
+    {
+        input_clear();
+        printf("Wrong password\n");
+        pause();
+        settings();
+    }
+}
+int check_password()
+{
+    int found2 = 0, count1 = 0, count2 = 0;
+    char buffer1[20];
+    char buffer2[20];
+    char pass[20];
+    FILE *userpointer = fopen("files/username_list.txt", "r");
+    if (userpointer == NULL)
+    {
+        perror("Server Error\n");
+    }
+    else
+    {
+        while (fscanf(userpointer, "%[^,],", buffer1) == 1)
+        {
+            count1++;
+            if (strcmp(buffer1, sign_in_user_name) == 0)
+            {
+                break;
+            }
+        }
+        fclose(userpointer);
+        printf("Hello %s Enter your Password\n", sign_in_user_name);
+        printf("-->>");
+        scanf("%s", pass);
+        FILE *passpointer = fopen("files/password_list.txt", "r");
+        if (passpointer == NULL)
+        {
+            perror("Server Error\n");
+        }
+        else
+        {
+
+            while (fscanf(passpointer, "%[^,],", buffer2) == 1)
+            {
+                count2++;
+                if (strcmp(buffer2, pass) == 0)
+                {
+
+                    if (count1 == count2)
+                    {
+                        found2 = 1;
+                        break;
+                    }
+                }
+            }
+            fclose(passpointer);
+        }
+    }
+    return found2;
+}
+void discard_username_password()
+{
+    int count1 = 0, count2 = 0;
+    char buffer1[20];
+    FILE *open_username = fopen("files/username_list.txt", "r+");
+    FILE *open_password = fopen("files/password_list.txt", "r+");
+    if (open_username == NULL || open_password == NULL)
+    {
+        perror("Error");
+    }
+    int position = ftell(open_username);
+    char buffer[20];
+    while (fscanf(open_username, "%[^,],", buffer) == 1)
+    {
+        count1++;
+        if (strcmp(buffer, sign_in_user_name) == 0)
+        {
+            break;
+        }
+        position = ftell(open_username);
+    }
+
+    for (int i = 0; i < strlen(sign_in_user_name); i++)
+    {
+        fseek(open_username, position, SEEK_SET);
+        fprintf(open_username, "$");
+        position++;
+    }
+
+    fclose(open_username);
+    position = ftell(open_password);
+    while (fscanf(open_password, "%[^,],", buffer1) == 1)
+    {
+        count2++;
+        if (count1 == count2)
+        {
+            break;
+        }
+        position = ftell(open_password);
+    }
+    fseek(open_password, position, SEEK_SET);
+    for (int i = 0; i < strlen(buffer1); i++)
+    {
+        fseek(open_password, position, SEEK_SET);
+        fprintf(open_password, "$");
+        position++;
+    }
+    fclose(open_password);
+}
+void allocate_new_username(char pass[])
+{
+    FILE *open_username = fopen("files/username_list.txt", "a");
+    FILE *open_password = fopen("files/password_list.txt", "a");
+    if (open_password == NULL || open_username == NULL)
+    {
+        perror("Error\n");
+    }
+    else
+    {
+
+        fprintf(open_username, "%s,", sign_in_user_name);
+        fprintf(open_password, "%s,", pass);
+    }
+    fclose(open_password);
+    fclose(open_username);
+    printf("Successfully Changed Password, Please Re login\n");
+    input_clear();
+    pause();
+    login_page();
 }
