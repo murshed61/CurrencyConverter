@@ -710,7 +710,7 @@ void currencyconversion(int from, int to, float value, int ch)
 }
 void manual_convert(int ch)
 {
-    const char *file_s_for_currency[] = {"files/Asia_currency.txt", "files/Europe_currency.txt", "files/Africa_currency.txt", "files/Australia.txt", "files/North_america_currency.txt", "files/South_america_currency.txt"};
+    const char *file_s_for_currency[] = {"files/Asia_currency.txt", "files/Europe_currency.txt", "files/Africa_currency.txt", "files/Australia_currency.txt", "files/North_america_currency.txt", "files/South_america_currency.txt"};
     int continent_from;
     int from;
     int continent_to;
