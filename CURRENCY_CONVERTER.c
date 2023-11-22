@@ -50,6 +50,7 @@ void change_password();
 int check_password();
 void discard_username_password();
 void allocate_new_username(char pass[]);
+int count_currency();
 
 // Program Starts From Here
 int main()
@@ -59,15 +60,21 @@ int main()
 void login_page()
 {
     system("cls");
+    printf("\033[0;36m");
     printf("\t\t\t\t\t\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////\n");
     printf("\t\t\t\t\t    %c Welcome to Currency Converter %c\n", 175, 174);
-    printf("\t\t\t\t\t////////////////////\\\\\\\\\\\\\\|LOGIN PAGE|\\\\\\\\\\\\\\\n");
-    printf("======================================================================\n");
-    printf("[1] Sign in   [2] Sign Up   [3] Go to Simplified Version\n");
-    printf("======================================================================\n");
+    printf("\t\t\t\t\t////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n\n");
+    printf("\033[0m");
+    printf("\033[1;32m");
+    printf("\t\t\t\t\t\t\t|LOGIN PAGE|\n");
+    printf("\t\t\t======================================================================\n");
+    printf("\t\t\t\t\t[1] Sign in   [2] Sign Up   [3] Guest Mode\n");
+    printf("\t\t\t======================================================================\n");
+    
     int ch;
-    printf("Choose an option %c", 175);
-    scanf("%d", &ch);
+    printf("%c Choose an option %c", 254,175);
+    printf("\033[0m");
+    scanf(" %d", &ch);
     input_clear();
     switch (ch)
     {
@@ -170,7 +177,7 @@ void sign_in()
 {
     char pass[20];
     char buffer1[100], buffer2[100];
-    int found1 = 0, found2 = 0, count1 = 0, count2 = 0;
+    int found1 = 0, found2 = 0, count1 = 1, count2 = 1;
     printf("Enter your username\n");
     printf("-->>");
     scanf("%s", sign_in_user_name);
@@ -274,10 +281,10 @@ void simplified_version()
     printf("\033[0;36m");
     printf("\t\t\t\t\t\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////\n");
     printf("\t\t\t\t\t    %c Welcome to Currency Converter %c\n", 175, 174);
-    printf("\t\t\t\t\t////////////////////\\\\GUEST MODE\\\\\\\\\\\\\\\\\\\\\\\\\n");
+    printf("\t\t\t\t\t////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n\n");
     printf("\033[0m");
-    printf("\033[32m"); // Green color code
-    printf("\n");
+    printf("\033[1;32m"); // Green color code
+    printf("\t\t\t\t\t\t\t|GUEST MODE|\n");
     printf("\t\t\t\t\t\t*************************\n");
     printf("\t\t\t\t\t\t*    %c MENU OPTIONS %c   *\n", 175, 174);
     printf("\t\t\t\t\t\t* [1] SEARCH TO CONVERT *\n");
@@ -340,10 +347,11 @@ void main_menu()
     printf("\033[0;36m");
     printf("\t\t\t\t\t\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////\n");
     printf("\t\t\t\t\t    %c Welcome to Currency Converter %c\n", 175, 174);
-    printf("\t\t\t\t\t////////////////////\\\%s\\\\\\\\\\\\\\\\\\\\\\\\\n", sign_in_user_name);
+    printf("\t\t\t\t\t////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n");
     printf("\033[0m");
-    printf("\033[32m"); // Green color code
+    printf("\033[1;32m"); // Green color code
     printf("\n");
+    printf("\t\t\t\t\t\tUser: %s\n",sign_in_user_name);
     printf("\t\t\t\t\t\t*************************\n");
     printf("\t\t\t\t\t\t*    %c MENU OPTIONS %c   *\n", 175, 174);
     printf("\t\t\t\t\t\t* [1] SEARCH TO CONVERT *\n");
@@ -578,7 +586,7 @@ void search_to_convert(int ch)
     }
     if (found1)
     {
-        printf("\033[0;32m");
+        printf("\033[1;32m");
         printf("\t------------------------------\n");
         printf("\tSELECTED CURRENCY IS || %s ||\n", struct_data[from - 1].currency_name);
         printf("\t------------------------------\n");
@@ -607,7 +615,7 @@ void search_to_convert(int ch)
     }
     if (found2)
     {
-        printf("\033[0;32m");
+        printf("\033[1;32m");
         printf("\t------------------------------\n");
         printf("\tSELECTED CURRENCY IS || %s ||\n", struct_data[to - 1].currency_name);
         printf("\t------------------------------\n");
@@ -628,7 +636,7 @@ void currencyconversion(int from, int to, float value, int ch)
             printf("Memory could not be accessed\n");
         }
 
-        printf("\033[1;31m");
+        printf("\033[0;31m");
         if (from == to) // same currency
         {
             printf("\n\n\t<=--------------------------------------------=>\n");
@@ -667,7 +675,7 @@ void currencyconversion(int from, int to, float value, int ch)
     }
     else
     {
-        printf("\033[1;31m");
+        printf("\033[0;31m");
         if (from == to) // same currency
         {
             printf("\n\n\t<=--------------------------------------------=>\n");
@@ -697,6 +705,7 @@ void currencyconversion(int from, int to, float value, int ch)
             printf("\t\t%.2f %s TO %s = %.2f %s\n", value, struct_data[from - 1].currency_name, struct_data[to - 1].currency_name, calculated_any, struct_data[to - 1].currency_name);
             printf("\t<=--------------------------------------------=>\n");
         }
+        printf("\033[0m");
     }
 }
 void manual_convert(int ch)
@@ -841,9 +850,9 @@ void show_list(int ch)
 void favourites()
 {
     system("cls");
-    printf("\n=====================================\n");
+    printf("\n=========================================================================\n");
     printf("[1] Read your favorites   [2] Edit your favorites   [3] Back to Main Menu\n");
-    printf("\n=====================================\n");
+    printf("\n=========================================================================\n");
     printf("-->> ");
     int ch;
     scanf("%d", &ch);
@@ -1274,10 +1283,10 @@ void edit_favourites()
         }
         for (int i = 0; i < 5 - cur_count; i++)
         {
-            char temp[6];
-            scanf("%s", temp);
-
-            for (int j = 0; j < strlen(temp); j++)
+            char temp[10];
+            scanf(" %9s", temp);
+            int loop_size = strlen(temp);
+            for (int j = 0; j < loop_size; j++)
             {
                 temp[j] = toupper(temp[j]);
             }
@@ -1287,7 +1296,7 @@ void edit_favourites()
                 break;
             }
             int found = check_entry(temp);
-            if (found == 1)
+            if (found == 1&&strlen(temp)==3)
             {
                 strcpy(struct_data[i].fav_currency, temp);
                 count++;
@@ -1393,8 +1402,6 @@ int count_currency()
     char buffer2[1000];
     FILE *read = fopen("files/Favourites.txt", "r+");
     FILE *user = fopen("files/user.txt", "r+");
-    long long int pointer2 = ftell(read);
-    int found2 = 0;
     if (read == NULL || user == NULL)
     {
         perror("Failed to open files\n");
@@ -1410,7 +1417,6 @@ int count_currency()
                     break;
                 }
             }
-            pointer2 = ftell(read);
         }
     }
 
@@ -1515,8 +1521,8 @@ void discard_username_password()
         }
         position = ftell(open_username);
     }
-
-    for (int i = 0; i < strlen(sign_in_user_name); i++)
+    int len1 = strlen(buffer);
+    for (int i = 0; i < len1; i++)
     {
         fseek(open_username, position, SEEK_SET);
         fprintf(open_username, "$");
@@ -1534,13 +1540,14 @@ void discard_username_password()
         }
         position = ftell(open_password);
     }
-    fseek(open_password, position, SEEK_SET);
-    for (int i = 0; i < strlen(buffer1); i++)
+    int len = strlen(buffer1);
+    for (int i = 0; i < len; i++)
     {
         fseek(open_password, position, SEEK_SET);
         fprintf(open_password, "$");
         position++;
     }
+
     fclose(open_password);
 }
 void allocate_new_username(char pass[])
@@ -1559,6 +1566,7 @@ void allocate_new_username(char pass[])
     }
     fclose(open_password);
     fclose(open_username);
+
     printf("Successfully Changed Password, Please Re login\n");
     input_clear();
     pause();
